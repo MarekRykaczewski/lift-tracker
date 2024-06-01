@@ -13,6 +13,7 @@ class UserProfile(models.Model):
 class Workout(models.Model):
     date = models.DateField()
     notes = models.TextField(blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="workouts")
 
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
