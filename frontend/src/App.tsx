@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Nav from "./components/Nav";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -17,8 +18,9 @@ function RegisterAndLogout() {
 
 function App() {
   return (
-    <>
+    <div className="flex">
       <BrowserRouter>
+        <Nav />
         <Routes>
           <Route
             path="/"
@@ -34,7 +36,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-    </>
+    </div>
   );
 }
 
