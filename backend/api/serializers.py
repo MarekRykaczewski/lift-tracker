@@ -38,10 +38,6 @@ class SetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Set
         fields = ['id', 'workout', 'exercise', 'order', 'reps', 'weight']
-        extra_kwargs = {
-            'workout': {'read_only': True},
-            'exercise': {'read_only': True}
-        }
 
 class WorkoutSerializer(serializers.ModelSerializer):
     sets = SetSerializer(many=True, read_only=True)
