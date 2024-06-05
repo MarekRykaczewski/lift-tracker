@@ -1,0 +1,23 @@
+[
+  {
+    "model": "api.exercise",
+    "pk": 1,
+    "fields": {
+      "name": "Push-up"
+    }
+  },
+  {
+    "model": "api.exercise",
+    "pk": 2,
+    "fields": {
+      "name": "Pull-up"
+    }
+  },
+  {
+    "model": "api.exercise",
+    "pk": 3,
+    "fields": {
+      "name": "Squat"
+    }
+  }
+]
