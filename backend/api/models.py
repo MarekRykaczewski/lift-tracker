@@ -15,6 +15,9 @@ class Workout(models.Model):
     notes = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="workouts")
 
+    class Meta:
+        unique_together = ('date', 'user')
+
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
 
