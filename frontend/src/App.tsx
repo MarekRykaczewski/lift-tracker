@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
+import Workout from "./pages/Workout";
 import Workouts from "./pages/Workouts";
 
 function Logout() {
@@ -42,6 +43,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/workouts/:date" element={<Workout />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

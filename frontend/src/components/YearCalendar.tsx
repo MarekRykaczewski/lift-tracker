@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const YearCalendar = () => {
   const currentYear = new Date().getFullYear();
@@ -70,12 +71,13 @@ const MonthView = ({ month, year, monthIndex }) => {
       <h3 className="mb-3 text-lg">{month}</h3>
       <div className="grid grid-cols-7 gap-1">
         {days.map((day) => (
-          <div
+          <Link
             key={day}
             className="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded-md"
+            to={`/workouts/${year}-${monthIndex + 1}-${day}`}
           >
             {day}
-          </div>
+          </Link>
         ))}
       </div>
     </div>
