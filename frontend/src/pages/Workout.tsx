@@ -5,6 +5,8 @@ import api from "../api";
 const Workout = () => {
   const { date } = useParams();
   const [workout, setWorkout] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     api
@@ -13,9 +15,35 @@ const Workout = () => {
         setWorkout(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching workout:", error);
+        if (error.response && error.response.status === 404) {
+          setWorkout(null);
+        } else {
+          setError("Error fetching workout");
+        }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [date]);
+
+  const createWorkout = () => {
+    api
+      .post(`api/workouts/`, { date })
+      .then((response) => {
+        setWorkout(response.data);
+      })
+      .catch((error) => {
+        setError("Error creating workout");
+      });
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div>
@@ -25,7 +53,10 @@ const Workout = () => {
           <p>Date: {workout.date}</p>
         </div>
       ) : (
-        <p>Loading...</p>
+        <div>
+          <p>No workout found for this date.</p>
+          <button onClick={createWorkout}>Create Workout</button>
+        </div>
       )}
     </div>
   );
