@@ -3,21 +3,24 @@
     "model": "api.exercise",
     "pk": 1,
     "fields": {
-      "name": "Push-up"
+      "name": "Push-up",
+      "muscle_group": "Chest"
     }
   },
   {
     "model": "api.exercise",
     "pk": 2,
     "fields": {
-      "name": "Pull-up"
+      "name": "Pull-up",
+      "muscle_group": "Back"
     }
   },
   {
     "model": "api.exercise",
     "pk": 3,
     "fields": {
-      "name": "Squat"
+      "name": "Squat",
+      "muscle_group": "Legs"
     }
   }
 ]

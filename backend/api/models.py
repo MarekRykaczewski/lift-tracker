@@ -20,6 +20,7 @@ class Workout(models.Model):
 
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
+    muscle_group = models.CharField(max_length=100)
 
 class Set(models.Model):
     workout = models.ForeignKey(Workout, related_name="sets", on_delete=models.CASCADE)
