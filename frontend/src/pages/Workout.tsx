@@ -1,49 +1,62 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
 import SetForm from "../components/SetForm";
 
-const Workout = () => {
-  const { date } = useParams();
-  const [workout, setWorkout] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [sets, setSets] = useState([]);
+interface Workout {
+  id: number;
+  date: string;
+}
+
+interface Set {
+  id: number;
+  exercise: string;
+  weight: number;
+  reps: number;
+}
+
+interface Params {
+  date: string;
+}
+
+const Workout: React.FC = () => {
+  const { date } = useParams<Params>();
+  const [workout, setWorkout] = useState<Workout | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [sets, setSets] = useState<Set[]>([]);
 
   useEffect(() => {
-    api
-      .get(`api/workouts/${date}/`)
-      .then((response) => {
-        setWorkout(response.data);
-        return api.get(`api/workouts/${date}/sets/`);
-      })
-      .then((response) => {
-        setSets(response.data);
-      })
-      .catch((error) => {
+    const fetchWorkoutData = async () => {
+      try {
+        const workoutResponse = await api.get(`api/workouts/${date}/`);
+        setWorkout(workoutResponse.data);
+        const setsResponse = await api.get(`api/workouts/${date}/sets/`);
+        setSets(setsResponse.data);
+      } catch (error: any) {
         if (error.response && error.response.status === 404) {
           setWorkout(null);
         } else {
           setError("Error fetching workout");
         }
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchWorkoutData();
   }, [date]);
 
-  const handleCreateWorkout = () => {
-    api
-      .post("api/workouts/", { date })
-      .then((response) => {
-        setWorkout(response.data);
-      })
-      .catch((error) => {
-        setError("Error creating workout");
-      });
+  const handleCreateWorkout = async () => {
+    try {
+      const response = await api.post("api/workouts/", { date });
+      setWorkout(response.data);
+    } catch (error) {
+      setError("Error creating workout");
+    }
   };
 
-  const handleSetCreated = (newSet) => {
+  const handleSetCreated = (newSet: Set) => {
     setSets((prevSets) => [...prevSets, newSet]);
   };
 
