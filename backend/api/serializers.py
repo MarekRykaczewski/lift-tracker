@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import UserProfile, Exercise, Set, Workout
+from .models import UserProfile, Exercise, Set, SetGroup, Workout
 
 User = get_user_model()
 
@@ -39,9 +39,16 @@ class SetSerializer(serializers.ModelSerializer):
         model = Set
         fields = ['id', 'workout', 'exercise', 'order', 'reps', 'weight']
 
-class WorkoutSerializer(serializers.ModelSerializer):
+class SetGroupSerializer(serializers.ModelSerializer):
     sets = SetSerializer(many=True, read_only=True)
 
     class Meta:
+        model = SetGroup
+        fields = ['id', 'workout', 'order', 'sets']
+
+class WorkoutSerializer(serializers.ModelSerializer):
+    set_groups = SetGroupSerializer(many=True, read_only=True)
+
+    class Meta:
         model = Workout
-        fields = ['id', 'date', 'notes', 'sets']
+        fields = ['id', 'date', 'notes', 'set_groups']
