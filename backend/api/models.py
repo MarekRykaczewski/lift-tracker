@@ -22,13 +22,21 @@ class Exercise(models.Model):
     name = models.CharField(max_length=100)
     muscle_group = models.CharField(max_length=100)
 
+class SetGroup(models.Model):
+    workout = models.ForeignKey(Workout, related_name="set_groups", on_delete=models.CASCADE)
+    order = models.PositiveIntegerField()
+
+    class Meta:
+        unique_together = ('workout', 'order')
+        ordering = ['order']
+
 class Set(models.Model):
-    workout = models.ForeignKey(Workout, related_name="sets", on_delete=models.CASCADE)
+    set_group = models.ForeignKey(SetGroup, related_name="sets", on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, related_name="sets", on_delete=models.CASCADE)
     order = models.PositiveIntegerField()
     reps = models.PositiveIntegerField()
     weight = models.FloatField()
 
     class Meta:
-        unique_together = ('workout', 'exercise', 'order')
+        unique_together = ('set_group', 'exercise', 'order')
         ordering = ['order']
