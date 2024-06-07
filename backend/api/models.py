@@ -20,7 +20,7 @@ class Workout(models.Model):
 
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
-    muscle_group = models.CharField(max_length=100)
+    muscle_group = models.CharField(max_length=100, null=True)
 
 class SetGroup(models.Model):
     workout = models.ForeignKey(Workout, related_name="set_groups", on_delete=models.CASCADE)
@@ -31,7 +31,7 @@ class SetGroup(models.Model):
         ordering = ['order']
 
 class Set(models.Model):
-    set_group = models.ForeignKey(SetGroup, related_name="sets", on_delete=models.CASCADE)
+    set_group = models.ForeignKey(SetGroup, related_name="sets", on_delete=models.CASCADE, null=True)
     exercise = models.ForeignKey(Exercise, related_name="sets", on_delete=models.CASCADE)
     order = models.PositiveIntegerField()
     reps = models.PositiveIntegerField()
