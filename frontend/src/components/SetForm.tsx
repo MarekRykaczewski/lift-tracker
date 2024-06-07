@@ -1,59 +1,91 @@
-import { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import api from "../api";
 
-const SetForm = ({ date, workoutId, onSetCreated }) => {
-  const [exerciseOptions, setExerciseOptions] = useState([]);
-  const [selectedExercise, setSelectedExercise] = useState();
-  const [weight, setWeight] = useState("");
-  const [reps, setReps] = useState("");
-  const [error, setError] = useState(null);
-  const [existingSets, setExistingSets] = useState([]);
+interface SetFormProps {
+  date: string;
+  workoutId: number;
+  onSetCreated: (set: any) => void;
+}
+
+interface ExerciseOption {
+  id: number;
+  name: string;
+}
+
+interface FormState {
+  selectedExercise: string;
+  weight: string;
+  reps: string;
+}
+
+const fetchExistingSets = async (date: string) => {
+  try {
+    const response = await api.get(`api/workouts/${date}/sets/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching existing sets:", error);
+    return [];
+  }
+};
+
+const fetchExerciseOptions = async () => {
+  try {
+    const response = await api.get("api/exercises/");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching exercises:", error);
+    return [];
+  }
+};
+
+const SetForm: React.FC<SetFormProps> = ({ date, workoutId, onSetCreated }) => {
+  const [exerciseOptions, setExerciseOptions] = useState<ExerciseOption>([]);
+  const [formState, setFormState] = useState<FormState>({
+    selectedExercise: "",
+    weight: "",
+    reps: "",
+  });
+  const [error, setError] = useState<string | null>(null);
+  const [existingSets, setExistingSets] = useState<any[]>([]);
 
   useEffect(() => {
-    api
-      .get(`api/workouts/${date}/sets/`)
-      .then((response) => {
-        setExistingSets(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching existing sets:", error);
-      });
+    const initializeData = async () => {
+      const sets = await fetchExistingSets(date);
+      setExistingSets(sets);
+      const exercises = await fetchExerciseOptions();
+      setExerciseOptions(exercises);
+    };
 
-    api
-      .get("api/exercises/")
-      .then((response) => {
-        setExerciseOptions(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching exercises:", error);
-      });
-  }, [workoutId]);
+    initializeData();
+  }, [date, workoutId]);
 
-  const handleCreateSet = (e) => {
+  const handleCreateSet = async (e) => {
     e.preventDefault();
     const order = existingSets.length + 1;
 
     const setData = {
-      exercise: parseInt(selectedExercise),
-      weight,
-      reps,
+      exercise: parseInt(formState.selectedExercise),
+      weight: formState.weight,
+      reps: formState.reps,
       workout: workoutId,
       order: order,
     };
 
-    console.log(setData);
-    api
-      .post(`api/workouts/${date}/sets/`, setData)
-      .then((response) => {
-        onSetCreated(response.data);
-        setSelectedExercise("");
-        setWeight("");
-        setReps("");
-        setError(null);
-      })
-      .catch((error) => {
-        setError("Error creating set");
-      });
+    try {
+      const response = await api.post(`api/workouts/${date}/sets/`, setData);
+      onSetCreated(response.data);
+      setFormState({ selectedExercise: "", weight: "", reps: "" });
+      setError(null);
+    } catch (error) {
+      setError("Error creating set");
+    }
+  };
+
+  const handleChange = (
+    e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormState((prevState) => ({ ...prevState, [name]: value }));
   };
 
   return (
@@ -63,8 +95,9 @@ const SetForm = ({ date, workoutId, onSetCreated }) => {
         <div>
           <label>Exercise:</label>
           <select
-            value={selectedExercise}
-            onChange={(e) => setSelectedExercise(e.target.value)}
+            name="selectedExercise"
+            value={formState.selectedExercise}
+            onChange={handleChange}
             required
           >
             <option value="">Select an exercise</option>
@@ -79,8 +112,9 @@ const SetForm = ({ date, workoutId, onSetCreated }) => {
           <label>Weight:</label>
           <input
             type="number"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
+            name="weight"
+            value={formState.weight}
+            onChange={handleChange}
             required
           />
         </div>
@@ -88,8 +122,9 @@ const SetForm = ({ date, workoutId, onSetCreated }) => {
           <label>Reps:</label>
           <input
             type="number"
-            value={reps}
-            onChange={(e) => setReps(e.target.value)}
+            name="reps"
+            value={formState.reps}
+            onChange={handleChange}
             required
           />
         </div>
