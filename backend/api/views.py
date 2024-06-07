@@ -67,3 +67,7 @@ class SetListCreateView(generics.ListCreateAPIView):
             serializer.save(workout=workout)
         except Workout.DoesNotExist:
             raise Http404("Workout not found")
+        
+class ExerciseListView(generics.ListAPIView):
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
