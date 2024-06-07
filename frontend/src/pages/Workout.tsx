@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
-import SetForm from "../components/SetForm";
+import SetGroupForm from "../components/SetGroupForm";
 
 interface Workout {
   id: number;
@@ -15,6 +15,12 @@ interface Set {
   reps: number;
 }
 
+interface SetGroup {
+  id: number;
+  order: number;
+  sets: Set[];
+}
+
 interface Params {
   date: string;
 }
@@ -24,15 +30,17 @@ const Workout: React.FC = () => {
   const [workout, setWorkout] = useState<Workout | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [sets, setSets] = useState<Set[]>([]);
+  const [setGroups, setSetGroups] = useState<SetGroup[]>([]);
 
   useEffect(() => {
     const fetchWorkoutData = async () => {
       try {
         const workoutResponse = await api.get(`api/workouts/${date}/`);
         setWorkout(workoutResponse.data);
-        const setsResponse = await api.get(`api/workouts/${date}/sets/`);
-        setSets(setsResponse.data);
+        const setGroupsResponse = await api.get(
+          `api/workouts/${date}/set-groups/`
+        );
+        setSetGroups(setGroupsResponse.data);
       } catch (error: any) {
         if (error.response && error.response.status === 404) {
           setWorkout(null);
@@ -56,8 +64,18 @@ const Workout: React.FC = () => {
     }
   };
 
-  const handleSetCreated = (newSet: Set) => {
-    setSets((prevSets) => [...prevSets, newSet]);
+  const handleGroupSetCreated = () => {
+    const fetchSetGroups = async () => {
+      try {
+        const setGroupsResponse = await api.get(
+          `api/workouts/${date}/set-groups/`
+        );
+        setSetGroups(setGroupsResponse.data);
+      } catch (error: any) {
+        setError("Error fetching set groups");
+      }
+    };
+    fetchSetGroups();
   };
 
   if (loading) {
@@ -74,22 +92,28 @@ const Workout: React.FC = () => {
       {workout ? (
         <div>
           <p>Date: {workout.date}</p>
-          <h2>Sets</h2>
-          {sets.length > 0 ? (
-            <ul>
-              {sets.map((set) => (
-                <li key={set.id}>
-                  {set.exercise}: {set.weight} lbs x {set.reps} reps
-                </li>
-              ))}
-            </ul>
+          <h2>Set Groups</h2>
+          {setGroups.length > 0 ? (
+            setGroups.map((setGroup) => (
+              <div key={setGroup.id}>
+                <h3>Set Group {setGroup.order}</h3>
+                <ul>
+                  {setGroup.sets.map((set) => (
+                    <li key={set.id}>
+                      {set.exercise}: {set.weight} lbs x {set.reps} reps
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
           ) : (
-            <p>No sets found for this workout.</p>
+            <p>No set groups found for this workout.</p>
           )}
-          <SetForm
-            workoutId={workout.id}
+          <SetGroupForm
+            onSuccess={handleGroupSetCreated}
             date={date}
-            onSetCreated={handleSetCreated}
+            workoutId={workout.id}
+            setGroupCount={setGroups.length}
           />
         </div>
       ) : (
