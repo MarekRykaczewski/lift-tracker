@@ -10,8 +10,6 @@ const Workout = () => {
   const [error, setError] = useState(null);
   const [sets, setSets] = useState([]);
 
-  console.log("sets", sets);
-
   useEffect(() => {
     api
       .get(`api/workouts/${date}/`)
