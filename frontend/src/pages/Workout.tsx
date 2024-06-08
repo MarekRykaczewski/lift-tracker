@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
+import SetGroup from "../components/SetGroup";
 import SetGroupForm from "../components/SetGroupForm";
 
 interface Workout {
@@ -78,6 +79,39 @@ const Workout: React.FC = () => {
     fetchSetGroups();
   };
 
+  const formatDate = (dateString) => {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+
+    const date = new Date(dateString);
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const month = months[date.getMonth()];
+    const dayOfMonth = date.getDate();
+
+    return `${dayOfWeek}, ${month} ${dayOfMonth}`;
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -87,25 +121,14 @@ const Workout: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>Workout Details</h1>
+    <div className="w-full p-4">
+      <h1 className="font-bold text-2xl text-center border-b-2 border-sky-500">
+        {formatDate(date)}
+      </h1>
       {workout ? (
-        <div>
-          <p>Date: {workout.date}</p>
-          <h2>Set Groups</h2>
+        <div className="flex flex-col gap-5 p-5">
           {setGroups.length > 0 ? (
-            setGroups.map((setGroup) => (
-              <div key={setGroup.id}>
-                <h3>Set Group {setGroup.order}</h3>
-                <ul>
-                  {setGroup.sets.map((set) => (
-                    <li key={set.id}>
-                      {set.exercise}: {set.weight} lbs x {set.reps} reps
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))
+            setGroups.map((setGroup) => <SetGroup setGroup={setGroup} />)
           ) : (
             <p>No set groups found for this workout.</p>
           )}
