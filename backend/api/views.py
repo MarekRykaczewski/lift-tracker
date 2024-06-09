@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.response import Response
 from .serializers import UserSerializer, WorkoutSerializer, SetSerializer, SetGroupSerializer, ExerciseSerializer
 from .models import User, Workout, Set, SetGroup, Exercise
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -64,7 +65,16 @@ class SetGroupListCreateView(generics.ListCreateAPIView):
         date = self.kwargs['date']
         try:
             workout = Workout.objects.get(date=date, user=self.request.user)
-            serializer.save(workout=workout)
+            set_group = serializer.save(workout=workout)
+
+            Set.objects.create(
+                set_group=set_group,
+                order=1,
+                reps=0,
+                weight=0
+            )
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Workout.DoesNotExist:
             raise Http404("Workout not found")
     

@@ -24,6 +24,7 @@ class Exercise(models.Model):
 
 class SetGroup(models.Model):
     workout = models.ForeignKey(Workout, related_name="set_groups", on_delete=models.CASCADE)
+    exercise = models.ForeignKey(Exercise, related_name="sets", on_delete=models.CASCADE)
     order = models.PositiveIntegerField()
 
     class Meta:
@@ -32,11 +33,10 @@ class SetGroup(models.Model):
 
 class Set(models.Model):
     set_group = models.ForeignKey(SetGroup, related_name="sets", on_delete=models.CASCADE, null=True)
-    exercise = models.ForeignKey(Exercise, related_name="sets", on_delete=models.CASCADE)
     order = models.PositiveIntegerField()
     reps = models.PositiveIntegerField()
     weight = models.FloatField()
 
     class Meta:
-        unique_together = ('set_group', 'exercise', 'order')
+        unique_together = ('set_group', 'order')
         ordering = ['order']
