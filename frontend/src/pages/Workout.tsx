@@ -121,12 +121,12 @@ const Workout: React.FC = () => {
   }
 
   return (
-    <div className="w-full p-4">
-      <h1 className="font-bold text-2xl text-center border-b-2 border-sky-500">
+    <div className="w-full bg-gray-100">
+      <h1 className="font-bold text-2xl text-center py-3 bg-gray-900 text-white border-b-4 border-sky-500">
         {formatDate(date)}
       </h1>
       {workout ? (
-        <div className="flex flex-col gap-5 p-5">
+        <div className="flex flex-col items-center gap-5 p-5">
           {setGroups.length > 0 ? (
             setGroups.map((setGroup) => <SetGroup setGroup={setGroup} />)
           ) : (
