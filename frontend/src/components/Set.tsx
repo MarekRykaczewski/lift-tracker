@@ -1,15 +1,4 @@
-import { useState } from "react";
-
-const Set = ({ set, onSave }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [weight, setWeight] = useState(set.weight);
-  const [reps, setReps] = useState(set.reps);
-
-  const handleSave = () => {
-    onSave(set.id, weight, reps);
-    setIsEditing(false);
-  };
-
+const Set = ({ set }) => {
   return (
     <div className="flex justify-between p-1" key={set.id}>
       <div>
