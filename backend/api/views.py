@@ -102,3 +102,29 @@ class SetListCreateView(generics.ListCreateAPIView):
 class ExerciseListView(generics.ListAPIView):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
+
+
+class SetRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Set.objects.all()
+    serializer_class = SetSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        set_group_id = self.kwargs['set_group_id']
+        try:
+            set_group = SetGroup.objects.get(id=set_group_id, workout__user=self.request.user)
+            return Set.objects.filter(set_group=set_group)
+        except SetGroup.DoesNotExist:
+            return Set.objects.none()
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        filter_kwargs = {
+            'id': self.kwargs['pk'],
+            'set_group__workout__user': self.request.user
+        }
+        try:
+            obj = queryset.get(**filter_kwargs)
+        except Set.DoesNotExist:
+            raise Http404("Set not found")
+        return obj
