@@ -1,4 +1,4 @@
-const Set = ({ set }) => {
+const SetPreview = ({ set }) => {
   return (
     <div className="flex justify-between p-1" key={set.id}>
       <div>
@@ -13,4 +13,4 @@ const Set = ({ set }) => {
   );
 };
 
-export default Set;
+export default SetPreview;
