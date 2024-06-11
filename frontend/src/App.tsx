@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
+import SetGroupDetails from "./pages/SetGroupDetails";
 import Workout from "./pages/Workout";
 import Workouts from "./pages/Workouts";
 
@@ -44,6 +45,10 @@ function App() {
             }
           />
           <Route path="/workouts/:date" element={<Workout />} />
+          <Route
+            path="/workouts/:date/set-groups/:id"
+            element={<SetGroupDetails />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
