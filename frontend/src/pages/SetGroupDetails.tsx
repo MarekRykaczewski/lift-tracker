@@ -27,6 +27,31 @@ const SetGroupDetails = () => {
     fetchSets();
   }, [setGroupId]);
 
+  const updateOrder = (sets) => {
+    const orderedSets = sets.map((set, index) => ({
+      ...set,
+      order: index + 1,
+    }));
+    setSets(orderedSets);
+    saveUpdatedOrder(orderedSets);
+  };
+
+  const saveUpdatedOrder = async (orderedSets) => {
+    try {
+      await Promise.all(
+        orderedSets.map((set) =>
+          api.put(`/api/workouts/set-groups/${setGroupId}/sets/${set.id}/`, {
+            ...set,
+            order: set.order,
+          })
+        )
+      );
+      setError(null);
+    } catch (error) {
+      setError("Error updating set order");
+    }
+  };
+
   const handleSetClick = (set) => {
     setSelectedSet(set);
     setFormState({ weight: set.weight, reps: set.reps });
@@ -88,7 +113,9 @@ const SetGroupDetails = () => {
       await api.delete(
         `/api/workouts/set-groups/${setGroupId}/sets/${selectedSet.id}/`
       );
-      setSets(sets.filter((set) => set.id !== selectedSet.id));
+      const updatedSets = sets.filter((set) => set.id !== selectedSet.id);
+      setSets(updatedSets);
+      updateOrder(updatedSets);
       setSelectedSet(null);
       setFormState({ weight: "", reps: "" });
       setError(null);
