@@ -20,6 +20,9 @@ class WorkoutListCreateView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
+        year = self.request.query_params.get('year', None)
+        if year:
+            return Workout.objects.filter(user=user, date__year=year)
         return Workout.objects.filter(user=user)
     
     def perform_create(self, serializer):
