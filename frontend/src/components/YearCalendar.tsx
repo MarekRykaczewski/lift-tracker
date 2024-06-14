@@ -1,9 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../api";
+
+interface Workout {
+  date: string;
+}
 
 const YearCalendar = () => {
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(currentYear);
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLoading(true);
+    api
+      .get(`/api/workouts/?year=${year}`)
+      .then((response) => {
+        console.log(response);
+        setWorkouts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching workouts:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [year]);
 
   const months = [
     "January",
@@ -45,17 +68,37 @@ const YearCalendar = () => {
           Next
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
-        {months.map((month, index) => (
-          <MonthView key={index} month={month} year={year} monthIndex={index} />
-        ))}
-      </div>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
+          {months.map((month, index) => (
+            <MonthView
+              key={index}
+              month={month}
+              year={year}
+              monthIndex={index}
+              workouts={workouts}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-const MonthView = ({ month, year, monthIndex }) => {
-  const getDaysInMonth = (year, month) => {
+const MonthView = ({
+  month,
+  year,
+  monthIndex,
+  workouts,
+}: {
+  month: string;
+  year: number;
+  monthIndex: number;
+  workouts: Workout[];
+}) => {
+  const getDaysInMonth = (year: number, month: number) => {
     return new Date(year, month + 1, 0).getDate();
   };
 
@@ -66,19 +109,37 @@ const MonthView = ({ month, year, monthIndex }) => {
     days.push(i);
   }
 
+  const getWorkoutsForDay = (day: number) => {
+    return workouts.some((workout) => {
+      const workoutDate = new Date(workout.date);
+      return (
+        workoutDate.getFullYear() === year &&
+        workoutDate.getMonth() === monthIndex &&
+        workoutDate.getDate() === day
+      );
+    });
+  };
+
   return (
     <div className="flex flex-col items-center border border-gray-300 rounded-lg p-3 bg-gray-100">
       <h3 className="mb-3 text-lg">{month}</h3>
       <div className="grid grid-cols-7 gap-1">
-        {days.map((day) => (
-          <Link
-            key={day}
-            className="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded-md"
-            to={`/workouts/${year}-${monthIndex + 1}-${day}`}
-          >
-            {day}
-          </Link>
-        ))}
+        {days.map((day) => {
+          const hasWorkout = getWorkoutsForDay(day);
+
+          return (
+            <Link
+              key={day}
+              className="relative overflow-hidden w-8 h-8 flex flex-col items-center justify-center bg-white border border-gray-300 rounded-md"
+              to={`/workouts/${year}-${monthIndex + 1}-${day}`}
+            >
+              <span>{day}</span>
+              {hasWorkout && (
+                <span className="w-full h-0.5 bottom-0 absolute rounded-full bg-blue-500" />
+              )}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
