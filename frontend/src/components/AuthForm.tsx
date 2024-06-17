@@ -11,6 +11,7 @@ interface AuthFormProps {
 function AuthForm({ route, method }: AuthFormProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -21,7 +22,12 @@ function AuthForm({ route, method }: AuthFormProps) {
     e.preventDefault();
 
     try {
-      const res = await api.post(route, { username, password });
+      const data = { username, password };
+      if (method === "register") {
+        data.email = email;
+      }
+
+      const res = await api.post(route, data);
       if (method === "login") {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
@@ -46,6 +52,15 @@ function AuthForm({ route, method }: AuthFormProps) {
         onChange={(e) => setUsername(e.target.value)}
         placeholder="Username"
       />
+      {method === "register" && (
+        <input
+          className="form-input"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+        />
+      )}
       <input
         className="form-input"
         type="password"
