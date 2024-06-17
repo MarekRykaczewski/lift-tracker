@@ -20,12 +20,22 @@ const SetGroupForm = ({ onSuccess, date, workoutId, setGroupCount }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!selectedExercise) {
+      setError("Please select an exercise");
+      return;
+    }
     try {
-      const response = await api.post(`api/workouts/${date}/set-groups/`, {
+      const payload = {
         workout: workoutId,
         exercise: selectedExercise,
         order: setGroupCount + 1,
-      });
+      };
+
+      const response = await api.post(
+        `api/workouts/${date}/set-groups/`,
+        payload
+      );
+
       onSuccess(response.data);
     } catch (error) {
       setError("Error creating set group");
