@@ -128,7 +128,9 @@ const Workout: React.FC = () => {
       {workout ? (
         <div className="flex flex-col items-center gap-5 p-5">
           {setGroups.length > 0 ? (
-            setGroups.map((setGroup) => <SetGroup setGroup={setGroup} />)
+            setGroups.map((setGroup) => (
+              <SetGroup key={setGroup.id} setGroup={setGroup} />
+            ))
           ) : (
             <p>No set groups found for this workout.</p>
           )}
