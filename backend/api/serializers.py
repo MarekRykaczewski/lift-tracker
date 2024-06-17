@@ -45,7 +45,7 @@ class SetGroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SetGroup
-        fields = ['id', 'workout', 'exercise_name', 'order', 'sets']
+        fields = ['id', 'workout', 'exercise', 'exercise_name', 'order', 'sets']
 
 class WorkoutSerializer(serializers.ModelSerializer):
     set_groups = SetGroupSerializer(many=True, read_only=True)
