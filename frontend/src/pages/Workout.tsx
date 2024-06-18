@@ -60,6 +60,7 @@ const Workout: React.FC = () => {
     try {
       const response = await api.post("api/workouts/", { date });
       setWorkout(response.data);
+      setError(null);
     } catch (error) {
       setError("Error creating workout");
     }
@@ -72,6 +73,7 @@ const Workout: React.FC = () => {
           `api/workouts/${date}/set-groups/`
         );
         setSetGroups(setGroupsResponse.data);
+        setError(null);
       } catch (error: any) {
         setError("Error fetching set groups");
       }
@@ -79,7 +81,19 @@ const Workout: React.FC = () => {
     fetchSetGroups();
   };
 
-  const formatDate = (dateString) => {
+  const handleDelete = async (setGroupId: number) => {
+    try {
+      await api.delete(`/api/workouts/set-groups/${setGroupId}/`);
+      setSetGroups((prevSetGroups) =>
+        prevSetGroups.filter((setGroup) => setGroup.id !== setGroupId)
+      );
+      setError(null);
+    } catch (error) {
+      setError("Error deleting set group");
+    }
+  };
+
+  const formatDate = (dateString: string) => {
     const months = [
       "January",
       "February",
@@ -129,7 +143,11 @@ const Workout: React.FC = () => {
         <div className="flex flex-col items-center gap-5 p-5">
           {setGroups.length > 0 ? (
             setGroups.map((setGroup) => (
-              <SetGroup key={setGroup.id} setGroup={setGroup} />
+              <SetGroup
+                key={setGroup.id}
+                setGroup={setGroup}
+                onDelete={handleDelete}
+              />
             ))
           ) : (
             <p>No set groups found for this workout.</p>
