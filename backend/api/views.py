@@ -131,3 +131,8 @@ class SetRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         except Set.DoesNotExist:
             raise Http404("Set not found")
         return obj
+    
+class SetGroupDestroyView(generics.DestroyAPIView):
+    queryset = SetGroup.objects.all()
+    serializer_class = SetGroupSerializer
+    permission_classes = [IsAuthenticated]
