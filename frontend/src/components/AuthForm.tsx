@@ -13,6 +13,7 @@ function AuthForm({ route, method }: AuthFormProps) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const name = method === "login" ? "Login" : "Register";
@@ -20,6 +21,7 @@ function AuthForm({ route, method }: AuthFormProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     e.preventDefault();
+    setError(null);
 
     try {
       const data = { username, password };
@@ -36,7 +38,7 @@ function AuthForm({ route, method }: AuthFormProps) {
         navigate("/login");
       }
     } catch (error) {
-      alert(error);
+      setError("Invalid credentials. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -54,6 +56,9 @@ function AuthForm({ route, method }: AuthFormProps) {
         </p>
       </div>
       <div className="flex flex-col p-6 gap-5">
+        {error && (
+          <div className="bg-red-100 text-red-700 p-4 rounded-sm">{error}</div>
+        )}
         <div className="flex flex-col gap-1">
           <label
             className="uppercase mb-2 text-xs font-bold text-gray-400"
