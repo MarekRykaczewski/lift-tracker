@@ -113,7 +113,6 @@ function AuthForm({ route, method }: AuthFormProps) {
         >
           {name}
         </button>
-        <button className="text-center text-gray-400">Forgot password?</button>
       </div>
     </form>
   );
