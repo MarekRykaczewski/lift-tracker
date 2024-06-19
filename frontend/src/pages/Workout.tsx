@@ -135,12 +135,18 @@ const Workout: React.FC = () => {
   }
 
   return (
-    <div className="w-full bg-gray-100">
+    <div className="w-full bg-gray-50">
       <h1 className="font-bold text-2xl text-center py-3 bg-gray-900 text-white border-b-4 border-sky-500">
         {formatDate(date)}
       </h1>
       {workout ? (
         <div className="flex flex-col items-center gap-5 p-5">
+          <SetGroupForm
+            onSuccess={handleGroupSetCreated}
+            date={date}
+            workoutId={workout.id}
+            setGroupCount={setGroups.length}
+          />
           {setGroups.length > 0 ? (
             setGroups.map((setGroup) => (
               <SetGroup
@@ -152,12 +158,6 @@ const Workout: React.FC = () => {
           ) : (
             <p>No set groups found for this workout.</p>
           )}
-          <SetGroupForm
-            onSuccess={handleGroupSetCreated}
-            date={date}
-            workoutId={workout.id}
-            setGroupCount={setGroups.length}
-          />
         </div>
       ) : (
         <div>

@@ -43,10 +43,19 @@ const SetGroupForm = ({ onSuccess, date, workoutId, setGroupCount }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Choose Exercise:
+    <form
+      className="flex bg-gray-100 max-w-md w-full flex-col border self-center ml-auto mr-auto rounded-sm p-6 gap-5"
+      onSubmit={handleSubmit}
+    >
+      <div className="flex flex-col gap-1">
+        <label
+          className="uppercase mb-2 text-xs font-bold text-gray-400"
+          htmlFor="exercise"
+        >
+          Choose Exercise
+        </label>
         <select
+          className="border-2 px-2 py-2 text-sm rounded-sm"
           value={selectedExercise}
           onChange={(event) => setSelectedExercise(event.target.value)}
         >
@@ -57,9 +66,14 @@ const SetGroupForm = ({ onSuccess, date, workoutId, setGroupCount }) => {
             </option>
           ))}
         </select>
-      </label>
-      {error && <p>{error}</p>}
-      <button type="submit">Create Set Group</button>
+      </div>
+      {error && <p className="text-red-500">{error}</p>}
+      <button
+        className="bg-blue-500 text-sm text-white rounded-sm py-4"
+        type="submit"
+      >
+        Create Set Group
+      </button>
     </form>
   );
 };
