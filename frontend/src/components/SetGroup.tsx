@@ -18,7 +18,7 @@ const SetGroup = ({ setGroup, onDelete }) => {
     <Link
       to={`./set-groups/${setGroup.id}`}
       state={{ setGroupId: setGroup.id }}
-      className="flex flex-col bg-white w-1/3 drop-shadow-lg"
+      className="flex flex-col bg-white w-full max-w-md drop-shadow-lg"
       key={setGroup.id}
     >
       <h2 className="border-b-2 flex justify-between border-sky-500 px-3 py-2">
