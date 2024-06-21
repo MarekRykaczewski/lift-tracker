@@ -4,10 +4,17 @@ from .models import UserProfile, Exercise, Set, SetGroup, Workout
 
 User = get_user_model()
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['id', 'weight', 'body_fat_percentage', 'preferred_unit']
+
 class UserSerializer(serializers.ModelSerializer):
+    userprofile = UserProfileSerializer()
+    
     class Meta:
         model = User
-        fields = ["id", "username", "email", "password"]
+        fields = ["id", "username", "email", "password", "userprofile"]
         extra_kwargs = {
             "password": {"write_only": True},
             "email": {"required": True}
@@ -21,20 +28,21 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
     
-class UserProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-
-    class Meta:
-        model = UserProfile
-        fields = ['id', 'user', 'weight', 'body_fat_percentage']
-    
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
         fields = ['id', 'name']
 
-
 class SetSerializer(serializers.ModelSerializer):
+    weight = serializers.SerializerMethodField()
+
+    def get_weight(self, obj):
+        request = self.context.get('request')
+        preferred_unit = request.user.profile.preferred_unit if request else 'kg'
+        if preferred_unit == 'lbs':
+            return round(obj.weight_kg * 2.20462, 2)  # Convert kg to lbs
+        return obj.weight
+
     class Meta:
         model = Set
         fields = ['id', 'order', 'reps', 'weight']

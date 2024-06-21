@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import generics, status
 from rest_framework.response import Response
-from .serializers import UserSerializer, WorkoutSerializer, SetSerializer, SetGroupSerializer, ExerciseSerializer
+from .serializers import UserSerializer, UserProfileSerializer, WorkoutSerializer, SetSerializer, SetGroupSerializer, ExerciseSerializer
 from .models import User, Workout, Set, SetGroup, Exercise
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import get_user_model
@@ -13,6 +13,13 @@ class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.profile
 
 class WorkoutListCreateView(generics.ListCreateAPIView):
     serializer_class = WorkoutSerializer
@@ -131,6 +138,11 @@ class SetRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         except Set.DoesNotExist:
             raise Http404("Set not found")
         return obj
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
     
 class SetGroupDestroyView(generics.DestroyAPIView):
     queryset = SetGroup.objects.all()

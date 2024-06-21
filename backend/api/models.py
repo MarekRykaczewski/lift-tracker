@@ -9,6 +9,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     weight = models.FloatField(null=True, blank=True)
     body_fat_percentage = models.FloatField(null=True, blank=True)
+    preferred_unit = models.CharField(max_length=3, choices=[('kg', 'Kilograms'), ('lbs', 'Pounds')], default='kg')
 
 class Workout(models.Model):
     date = models.DateField()

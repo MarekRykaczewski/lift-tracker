@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import SetGroupDetails from "./pages/SetGroupDetails";
 import Workout from "./pages/Workout";
 import Workouts from "./pages/Workouts";
+import Settings from "./pages/Settings";
 
 function Logout() {
   localStorage.clear();
@@ -36,6 +37,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<RegisterAndLogout />} />
+          <Route path="/settings" element={<Settings />} />
           <Route
             path="/workouts"
             element={
