@@ -34,9 +34,9 @@ class ExerciseSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class SetSerializer(serializers.ModelSerializer):
-    weight = serializers.SerializerMethodField()
+    display_weight = serializers.SerializerMethodField()
 
-    def get_weight(self, obj):
+    def get_display_weight(self, obj):
         request = self.context.get('request')
         preferred_unit = request.user.profile.preferred_unit if request else 'kg'
         if preferred_unit == 'lbs':
@@ -45,7 +45,7 @@ class SetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Set
-        fields = ['id', 'order', 'reps', 'weight']
+        fields = ['id', 'order', 'reps', 'weight', "display_weight"]
 
 class SetGroupSerializer(serializers.ModelSerializer):
     sets = SetSerializer(many=True, read_only=True)
