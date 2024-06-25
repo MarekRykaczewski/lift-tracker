@@ -40,8 +40,17 @@ class SetSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         preferred_unit = request.user.profile.preferred_unit if request else 'kg'
         if preferred_unit == 'lbs':
-            return round(obj.weight * 2.20462, 2)  # Convert kg to lbs
+            lbs = obj.weight * 2.20462
+            return round(lbs, 1)  # Convert kg to lbs
         return obj.weight
+    
+    def validate_weight(self, value):
+        request = self.context.get('request')
+        preferred_unit = request.user.profile.preferred_unit if request else 'kg'
+        if preferred_unit == 'lbs':
+            lbs = value / 2.20462
+            return round(lbs, 2)  # Convert kg to lbs
+        return value
 
     class Meta:
         model = Set
