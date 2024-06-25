@@ -1,4 +1,8 @@
+import { usePreferences } from "../context/PreferencesContext";
+
 const Set = ({ set, isSelected }) => {
+  const { preferredUnit } = usePreferences();
+
   return (
     <div
       className={`flex justify-between p-1 border-b ${
@@ -9,8 +13,8 @@ const Set = ({ set, isSelected }) => {
         <span className="font-bold mr-1">{set.order}</span>
       </div>
       <div>
-        <span className="font-bold mr-1">{set.weight}</span>
-        <span className="text-gray-700">lbs</span>
+        <span className="font-bold mr-1">{set.display_weight}</span>
+        <span className="text-gray-700">{preferredUnit}</span>
       </div>
       <div>
         <span className="font-bold mr-1">{set.reps}</span>

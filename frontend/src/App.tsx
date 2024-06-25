@@ -6,9 +6,9 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import SetGroupDetails from "./pages/SetGroupDetails";
+import Settings from "./pages/Settings";
 import Workout from "./pages/Workout";
 import Workouts from "./pages/Workouts";
-import Settings from "./pages/Settings";
 
 function Logout() {
   localStorage.clear();

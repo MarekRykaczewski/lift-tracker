@@ -1,19 +1,8 @@
-import { useEffect, useState } from "react";
 import api from "../api";
+import { usePreferences } from "../context/PreferencesContext";
 
 const Settings = () => {
-  const [preferredUnit, setPreferredUnit] = useState("kg");
-
-  useEffect(() => {
-    api
-      .get("/api/user/profile/")
-      .then((response) => {
-        setPreferredUnit(response.data.preferred_unit);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the user profile!", error);
-      });
-  }, []);
+  const { preferredUnit, setPreferredUnit } = usePreferences();
 
   const handleChange = (event) => {
     const newUnit = event.target.value;
@@ -24,7 +13,7 @@ const Settings = () => {
         console.log("Preferred unit updated successfully!");
       })
       .catch((error) => {
-        console.error("There was an error updating the preferred unit!", error);
+        console.error("Error updating preferred unit:", error);
       });
   };
 
