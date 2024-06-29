@@ -160,9 +160,18 @@ const Workout: React.FC = () => {
           )}
         </div>
       ) : (
-        <div>
-          <p>No workout found for this date.</p>
-          <button onClick={handleCreateWorkout}>Create Workout</button>
+        <div className="p-3">
+          <div className="flex max-w-md w-full flex-col border self-center ml-auto mr-auto rounded-sm p-6 gap-5">
+            <p className="uppercase mb-2 text-xs font-bold text-gray-400">
+              No workout found for this date.
+            </p>
+            <button
+              className="border-2 px-2 py-2 text-sm rounded-sm placeholder:text-gray-300"
+              onClick={handleCreateWorkout}
+            >
+              Create Workout
+            </button>
+          </div>
         </div>
       )}
     </div>
