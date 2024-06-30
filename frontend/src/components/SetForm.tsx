@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Set as SetType } from "../types";
-
 import api from "../api";
+import { Set as SetType } from "../types";
 
 interface SetFormProps {
   date: string;
