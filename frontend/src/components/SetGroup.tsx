@@ -1,11 +1,18 @@
+import React from "react";
 import { Link } from "react-router-dom";
+import { SetGroup as SetGroupType } from "../types";
 import SetPreview from "./SetPreview";
 import Trash from "./icons/Trash";
 
-const SetGroup = ({ setGroup, onDelete }) => {
-  const sets = setGroup.sets;
+interface SetGroupProps {
+  setGroup: SetGroupType;
+  onDelete: (id: number) => void;
+}
 
-  const handleDelete = async (e) => {
+const SetGroup: React.FC<SetGroupProps> = ({ setGroup, onDelete }) => {
+  const { sets } = setGroup;
+
+  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       onDelete(setGroup.id);
@@ -19,7 +26,6 @@ const SetGroup = ({ setGroup, onDelete }) => {
       to={`./set-groups/${setGroup.id}`}
       state={{ setGroupId: setGroup.id }}
       className="flex flex-col bg-white w-full max-w-md drop-shadow-lg"
-      key={setGroup.id}
     >
       <h2 className="border-b-2 flex justify-between border-sky-500 px-3 py-2">
         {setGroup.exercise_name}

@@ -1,10 +1,25 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import api from "../api";
 
-const PreferencesContext = createContext();
+interface PreferencesContextType {
+  preferredUnit: string;
+  setPreferredUnit: React.Dispatch<React.SetStateAction<string>>;
+}
 
-export const PreferencesProvider = ({ children }) => {
-  const [preferredUnit, setPreferredUnit] = useState("kg");
+const PreferencesContext = createContext<PreferencesContextType | undefined>(
+  undefined
+);
+
+export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const [preferredUnit, setPreferredUnit] = useState<string>("kg");
 
   useEffect(() => {
     api
@@ -24,6 +39,10 @@ export const PreferencesProvider = ({ children }) => {
   );
 };
 
-export const usePreferences = () => {
-  return useContext(PreferencesContext);
+export const usePreferences = (): PreferencesContextType => {
+  const context = useContext(PreferencesContext);
+  if (!context) {
+    throw new Error("usePreferences must be used within a PreferencesProvider");
+  }
+  return context;
 };

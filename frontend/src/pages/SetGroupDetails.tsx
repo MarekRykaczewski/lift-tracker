@@ -1,24 +1,30 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import api from "../api";
 import Set from "../components/Set";
+import { Set as SetType } from "../types";
 
-const SetGroupDetails = () => {
+const SetGroupDetails: React.FC = () => {
   const location = useLocation();
-  const setGroupId = location.state.setGroupId;
+  const setGroupId: number = location.state?.setGroupId;
 
-  const [sets, setSets] = useState([]);
-  const [selectedSet, setSelectedSet] = useState(null);
-  const [formState, setFormState] = useState({ weight: 0, reps: 0 });
-  const [error, setError] = useState(null);
+  const [sets, setSets] = useState<SetType[]>([]);
+  const [selectedSet, setSelectedSet] = useState<SetType | null>(null);
+  const [formState, setFormState] = useState<{ weight: number; reps: number }>({
+    weight: 0,
+    reps: 0,
+  });
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSets = async () => {
       try {
-        const response = await api.get(
-          `/api/workouts/set-groups/${setGroupId}/sets/`
-        );
-        setSets(response.data);
+        if (setGroupId) {
+          const response = await api.get<SetType[]>(
+            `/api/workouts/set-groups/${setGroupId}/sets/`
+          );
+          setSets(response.data);
+        }
       } catch (error) {
         setError("Error fetching sets");
       }
@@ -27,13 +33,15 @@ const SetGroupDetails = () => {
     fetchSets();
   }, [setGroupId]);
 
-  const handleSetClick = (set) => {
+  const handleSetClick = (set: SetType) => {
     setSelectedSet(set);
     setFormState({ weight: set.display_weight, reps: set.reps });
   };
 
-  const handleCreateSet = async (e) => {
+  const handleCreateSet = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!setGroupId) return;
+
     const order = sets.length + 1;
 
     const setData = {
@@ -43,20 +51,21 @@ const SetGroupDetails = () => {
     };
 
     try {
-      const response = await api.post(
+      const response = await api.post<SetType>(
         `/api/workouts/set-groups/${setGroupId}/sets/`,
         setData
       );
       setSets([...sets, response.data]);
-      setFormState({ weight: "", reps: "" });
+      setFormState({ weight: 0, reps: 0 });
       setError(null);
     } catch (error) {
       setError("Error creating set");
     }
   };
 
-  const handleUpdateSet = async (e) => {
+  const handleUpdateSet = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!setGroupId || !selectedSet) return;
 
     const setData = {
       order: selectedSet.order,
@@ -65,7 +74,7 @@ const SetGroupDetails = () => {
     };
 
     try {
-      const response = await api.put(
+      const response = await api.put<SetType>(
         `/api/workouts/set-groups/${setGroupId}/sets/${selectedSet.id}/`,
         setData
       );
@@ -74,7 +83,7 @@ const SetGroupDetails = () => {
       );
       setSets(updatedSets);
       setSelectedSet(null);
-      setFormState({ weight: "", reps: "" });
+      setFormState({ weight: 0, reps: 0 });
       setError(null);
     } catch (error) {
       setError("Error updating set");
@@ -82,7 +91,7 @@ const SetGroupDetails = () => {
   };
 
   const handleDeleteSet = async () => {
-    if (!selectedSet) return;
+    if (!setGroupId || !selectedSet) return;
 
     try {
       await api.delete(
@@ -91,7 +100,7 @@ const SetGroupDetails = () => {
       const updatedSets = sets.filter((set) => set.id !== selectedSet.id);
       setSets(updatedSets);
       setSelectedSet(null);
-      setFormState({ weight: "", reps: "" });
+      setFormState({ weight: 0, reps: 0 });
       setError(null);
     } catch (error) {
       setError("Error deleting set");
@@ -108,7 +117,7 @@ const SetGroupDetails = () => {
           className="flex flex-col mb-2"
           onSubmit={selectedSet ? handleUpdateSet : handleCreateSet}
         >
-          <label className="border-b-2 mb-1 font-semibold border-sky-500 ">
+          <label className="border-b-2 mb-1 font-semibold border-sky-500">
             WEIGHT
           </label>
           <input
@@ -116,7 +125,7 @@ const SetGroupDetails = () => {
             type="number"
             value={formState.weight}
             onChange={(e) =>
-              setFormState({ ...formState, weight: e.target.value })
+              setFormState({ ...formState, weight: parseInt(e.target.value) })
             }
           />
           <label className="border-b-2 mb-1 font-semibold border-sky-500">
@@ -127,7 +136,7 @@ const SetGroupDetails = () => {
             type="number"
             value={formState.reps}
             onChange={(e) =>
-              setFormState({ ...formState, reps: e.target.value })
+              setFormState({ ...formState, reps: parseInt(e.target.value) })
             }
           />
           <div className="flex justify-center gap-2 mt-2">
@@ -143,7 +152,7 @@ const SetGroupDetails = () => {
                 type="button"
                 onClick={() => {
                   setSelectedSet(null);
-                  setFormState({ weight: "", reps: "" });
+                  setFormState({ weight: 0, reps: 0 });
                 }}
               >
                 Clear

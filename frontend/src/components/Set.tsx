@@ -1,6 +1,12 @@
 import { usePreferences } from "../context/PreferencesContext";
+import { Set as SetType } from "../types";
 
-const Set = ({ set, isSelected }) => {
+interface SetProps {
+  set: SetType;
+  isSelected: boolean;
+}
+
+const Set: React.FC<SetProps> = ({ set, isSelected }) => {
   const { preferredUnit } = usePreferences();
 
   return (

@@ -1,64 +1,63 @@
+import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
 import SetGroup from "../components/SetGroup";
 import SetGroupForm from "../components/SetGroupForm";
-
-interface Workout {
-  id: number;
-  date: string;
-}
-
-interface Set {
-  id: number;
-  exercise: string;
-  weight: number;
-  reps: number;
-}
-
-interface SetGroup {
-  id: number;
-  order: number;
-  sets: Set[];
-}
+import { SetGroup as SetGroupType, Workout as WorkoutType } from "../types";
 
 interface Params {
-  date: string;
+  [key: string]: string | undefined;
 }
 
 const Workout: React.FC = () => {
   const { date } = useParams<Params>();
-  const [workout, setWorkout] = useState<Workout | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [workout, setWorkout] = useState<WorkoutType | null>(null);
+  const [loadingWorkout, setLoadingWorkout] = useState<boolean>(true);
+  const [loadingSetGroups, setLoadingSetGroups] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [setGroups, setSetGroups] = useState<SetGroup[]>([]);
+  const [setGroups, setSetGroups] = useState<SetGroupType[]>([]);
 
   useEffect(() => {
     const fetchWorkoutData = async () => {
       try {
-        const workoutResponse = await api.get(`api/workouts/${date}/`);
+        const workoutResponse = await api.get<WorkoutType>(
+          `api/workouts/${date}/`
+        );
         setWorkout(workoutResponse.data);
-        const setGroupsResponse = await api.get(
+        setLoadingWorkout(false);
+      } catch (error: unknown) {
+        if (error instanceof AxiosError) {
+          if (error.response && error.response.status === 404) {
+            setWorkout(null);
+          } else {
+            setError("Error fetching workout");
+          }
+          setLoadingWorkout(false);
+        }
+      }
+    };
+
+    const fetchSetGroupsData = async () => {
+      try {
+        const setGroupsResponse = await api.get<SetGroupType[]>(
           `api/workouts/${date}/set-groups/`
         );
         setSetGroups(setGroupsResponse.data);
-      } catch (error: any) {
-        if (error.response && error.response.status === 404) {
-          setWorkout(null);
-        } else {
-          setError("Error fetching workout");
-        }
-      } finally {
-        setLoading(false);
+        setLoadingSetGroups(false);
+      } catch (error) {
+        setError("Error fetching set groups");
+        setLoadingSetGroups(false);
       }
     };
 
     fetchWorkoutData();
+    fetchSetGroupsData();
   }, [date]);
 
   const handleCreateWorkout = async () => {
     try {
-      const response = await api.post("api/workouts/", { date });
+      const response = await api.post<WorkoutType>("api/workouts/", { date });
       setWorkout(response.data);
       setError(null);
     } catch (error) {
@@ -66,19 +65,16 @@ const Workout: React.FC = () => {
     }
   };
 
-  const handleGroupSetCreated = () => {
-    const fetchSetGroups = async () => {
-      try {
-        const setGroupsResponse = await api.get(
-          `api/workouts/${date}/set-groups/`
-        );
-        setSetGroups(setGroupsResponse.data);
-        setError(null);
-      } catch (error: any) {
-        setError("Error fetching set groups");
-      }
-    };
-    fetchSetGroups();
+  const handleGroupSetCreated = async () => {
+    try {
+      const setGroupsResponse = await api.get(
+        `api/workouts/${date}/set-groups/`
+      );
+      setSetGroups(setGroupsResponse.data);
+      setError(null);
+    } catch (error) {
+      setError("Error fetching set groups");
+    }
   };
 
   const handleDelete = async (setGroupId: number) => {
@@ -126,7 +122,7 @@ const Workout: React.FC = () => {
     return `${dayOfWeek}, ${month} ${dayOfMonth}`;
   };
 
-  if (loading) {
+  if (loadingWorkout || loadingSetGroups) {
     return <p>Loading...</p>;
   }
 
@@ -137,13 +133,13 @@ const Workout: React.FC = () => {
   return (
     <div className="w-full bg-gray-50">
       <h1 className="font-bold text-2xl text-center py-3 bg-gray-900 text-white border-b-4 border-sky-500">
-        {formatDate(date)}
+        {formatDate(date!)}
       </h1>
       {workout ? (
         <div className="flex flex-col items-center gap-5 p-5">
           <SetGroupForm
             onSuccess={handleGroupSetCreated}
-            date={date}
+            date={date!}
             workoutId={workout.id}
             setGroupCount={setGroups.length}
           />

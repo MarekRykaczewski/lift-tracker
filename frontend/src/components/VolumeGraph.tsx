@@ -11,6 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import api from "../api";
+import { Workout } from "../types";
 
 ChartJS.register(
   CategoryScale,
@@ -21,29 +22,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
-interface Set {
-  id: number;
-  order: number;
-  reps: number;
-  weight: number;
-}
-
-interface SetGroup {
-  id: number;
-  workout: number;
-  exercise: number;
-  exercise_name: string;
-  order: number;
-  sets: Set[];
-}
-
-interface Workout {
-  id: number;
-  date: string;
-  notes: string | null;
-  set_groups: SetGroup[];
-}
 
 const VolumeGraph: React.FC = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);

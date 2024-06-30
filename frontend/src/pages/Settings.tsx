@@ -1,17 +1,15 @@
+import React from "react";
 import api from "../api";
 import { usePreferences } from "../context/PreferencesContext";
 
-const Settings = () => {
+const Settings: React.FC = () => {
   const { preferredUnit, setPreferredUnit } = usePreferences();
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newUnit = event.target.value;
     setPreferredUnit(newUnit);
     api
       .put("/api/user/profile/", { preferred_unit: newUnit })
-      .then((response) => {
-        console.log("Preferred unit updated successfully!");
-      })
       .catch((error) => {
         console.error("Error updating preferred unit:", error);
       });

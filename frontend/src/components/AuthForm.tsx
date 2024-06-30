@@ -24,7 +24,7 @@ function AuthForm({ route, method }: AuthFormProps) {
     setError(null);
 
     try {
-      const data = { username, password };
+      const data = { username, password, email };
       if (method === "register") {
         data.email = email;
       }

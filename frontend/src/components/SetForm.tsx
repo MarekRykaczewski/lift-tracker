@@ -1,10 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
+import { Set as SetType } from "../types";
+
 import api from "../api";
 
 interface SetFormProps {
   date: string;
   workoutId: number;
-  onSetCreated: (set: any) => void;
+  onSetCreated: (set: SetType) => void;
 }
 
 interface ExerciseOption {
@@ -39,14 +41,14 @@ const fetchExerciseOptions = async () => {
 };
 
 const SetForm: React.FC<SetFormProps> = ({ date, workoutId, onSetCreated }) => {
-  const [exerciseOptions, setExerciseOptions] = useState<ExerciseOption>([]);
+  const [exerciseOptions, setExerciseOptions] = useState<ExerciseOption[]>([]);
   const [formState, setFormState] = useState<FormState>({
     selectedExercise: "",
     weight: "",
     reps: "",
   });
   const [error, setError] = useState<string | null>(null);
-  const [existingSets, setExistingSets] = useState<any[]>([]);
+  const [existingSets, setExistingSets] = useState<SetType[]>([]);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -57,16 +59,16 @@ const SetForm: React.FC<SetFormProps> = ({ date, workoutId, onSetCreated }) => {
     };
 
     initializeData();
-  }, [date, workoutId]);
+  }, [date]);
 
-  const handleCreateSet = async (e) => {
+  const handleCreateSet = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const order = existingSets.length + 1;
 
     const setData = {
-      exercise: parseInt(formState.selectedExercise),
-      weight: formState.weight,
-      reps: formState.reps,
+      exercise: parseInt(formState.selectedExercise, 10),
+      weight: parseFloat(formState.weight),
+      reps: parseInt(formState.reps, 10),
       workout: workoutId,
       order: order,
     };

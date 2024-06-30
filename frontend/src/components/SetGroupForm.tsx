@@ -1,10 +1,28 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../api";
+import { SetGroup } from "../types";
 
-const SetGroupForm = ({ onSuccess, date, workoutId, setGroupCount }) => {
-  const [selectedExercise, setSelectedExercise] = useState("");
-  const [exercises, setExercises] = useState([]);
-  const [error, setError] = useState("");
+interface SetGroupFormProps {
+  onSuccess: (data: SetGroup) => void;
+  date: string;
+  workoutId: number;
+  setGroupCount: number;
+}
+
+interface Exercise {
+  id: number;
+  name: string;
+}
+
+const SetGroupForm: React.FC<SetGroupFormProps> = ({
+  onSuccess,
+  date,
+  workoutId,
+  setGroupCount,
+}) => {
+  const [selectedExercise, setSelectedExercise] = useState<string>("");
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const fetchExercises = async () => {
@@ -18,7 +36,7 @@ const SetGroupForm = ({ onSuccess, date, workoutId, setGroupCount }) => {
     fetchExercises();
   }, []);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!selectedExercise) {
       setError("Please select an exercise");
@@ -58,6 +76,7 @@ const SetGroupForm = ({ onSuccess, date, workoutId, setGroupCount }) => {
           className="border-2 px-2 py-2 text-sm rounded-sm"
           value={selectedExercise}
           onChange={(event) => setSelectedExercise(event.target.value)}
+          required
         >
           <option value="">Select an exercise...</option>
           {exercises.map((exercise) => (
