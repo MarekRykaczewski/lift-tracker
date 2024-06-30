@@ -23,6 +23,22 @@ ChartJS.register(
   Legend
 );
 
+type AggregatedData = {
+  [key: string]: {
+    volume: number;
+    sets: number;
+    reps: number;
+    count: number;
+  };
+};
+
+type MetricData = {
+  date: string;
+  volume: number;
+  sets: number;
+  reps: number;
+};
+
 const VolumeGraph: React.FC = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [timeInterval, setTimeInterval] = useState<string>("1month");
@@ -113,33 +129,84 @@ const VolumeGraph: React.FC = () => {
     return filteredWorkouts;
   };
 
-  const getDataForMetric = (workout: Workout) => {
+  const aggregateData = (workouts: Workout[], interval: string) => {
+    const aggregated: AggregatedData = {};
+
+    workouts.forEach((workout) => {
+      const date = new Date(workout.date);
+      const week = Math.ceil(date.getDate() / 7);
+      let key: string;
+
+      switch (interval) {
+        case "monthly":
+          key = `${date.getFullYear()}-${date.getMonth() + 1}`;
+          break;
+        case "weekly":
+          key = `${date.getFullYear()}-${date.getMonth() + 1}-W${week}`;
+          break;
+        case "yearly":
+          key = `${date.getFullYear()}`;
+          break;
+        default:
+          key = workout.date;
+      }
+
+      if (!aggregated[key]) {
+        aggregated[key] = { volume: 0, sets: 0, reps: 0, count: 0 };
+      }
+
+      aggregated[key].volume += calculateVolume(workout);
+      aggregated[key].sets += calculateSets(workout);
+      aggregated[key].reps += calculateReps(workout);
+      aggregated[key].count += 1;
+    });
+
+    return Object.entries(aggregated).map(([date, data]) => {
+      const { volume, sets, reps, count } = data;
+      return {
+        date,
+        volume: volume / (metric.includes("per_workout") ? count : 1),
+        sets: sets / (metric.includes("per_workout") ? count : 1),
+        reps: reps / (metric.includes("per_workout") ? count : 1),
+      };
+    });
+  };
+
+  const getDataForMetric = (data: MetricData) => {
     switch (metric) {
       case "volume_per_workout":
       case "volume_per_month":
       case "volume_per_week":
       case "volume_per_year":
-        return calculateVolume(workout);
+        return data.volume;
       case "sets_per_workout":
       case "sets_per_month":
       case "sets_per_week":
       case "sets_per_year":
-        return calculateSets(workout);
+        return data.sets;
       case "reps_per_workout":
       case "reps_per_month":
       case "reps_per_week":
       case "reps_per_year":
-        return calculateReps(workout);
+        return data.reps;
       default:
         return 0;
     }
   };
 
   const filteredWorkouts = filterWorkouts();
-  const dates = filteredWorkouts.map((workout) => workout.date);
-  const dataPoints = filteredWorkouts.map((workout) =>
-    getDataForMetric(workout)
-  );
+
+  const interval = metric.includes("per_month")
+    ? "monthly"
+    : metric.includes("per_week")
+    ? "weekly"
+    : metric.includes("per_year")
+    ? "yearly"
+    : "daily";
+
+  const aggregatedData = aggregateData(filteredWorkouts, interval);
+  const dates = aggregatedData.map((data) => data.date);
+  const dataPoints = aggregatedData.map((data) => getDataForMetric(data));
 
   const data = {
     labels: dates,
