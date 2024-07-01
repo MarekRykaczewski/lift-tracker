@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import api from "../api";
 import SetGroup from "../components/SetGroup";
 import SetGroupForm from "../components/SetGroupForm";
@@ -122,6 +122,15 @@ const Workout: React.FC = () => {
     return `${dayOfWeek}, ${month} ${dayOfMonth}`;
   };
 
+  const calculateDate = (currentDate: string, offset: number) => {
+    const date = new Date(currentDate);
+    date.setDate(date.getDate() + offset);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   if (loadingWorkout || loadingSetGroups) {
     return <p>Loading...</p>;
   }
@@ -132,8 +141,19 @@ const Workout: React.FC = () => {
 
   return (
     <div className="w-full bg-gray-50">
-      <h1 className="font-bold text-2xl text-center py-3 bg-gray-900 text-white border-b-4 border-sky-500">
+      <h1 className="font-bold flex items-center px-2 justify-center gap-3 text-2xl text-center py-3 bg-gray-900 text-white border-b-4 border-sky-500">
+        <Link to={`/workouts/${calculateDate(date!, -1)}`}>
+          <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700">
+            Prev
+          </button>
+        </Link>
+
         {formatDate(date!)}
+        <Link to={`/workouts/${calculateDate(date!, 1)}`}>
+          <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700">
+            Next
+          </button>
+        </Link>
       </h1>
       {workout ? (
         <div className="flex flex-col items-center gap-5 p-5">
