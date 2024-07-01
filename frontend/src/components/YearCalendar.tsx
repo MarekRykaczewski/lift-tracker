@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
+import { SetGroup } from "../types";
 
 interface Workout {
   date: string;
+  set_groups: SetGroup[];
 }
 
 const YearCalendar = () => {
@@ -17,7 +19,6 @@ const YearCalendar = () => {
     api
       .get(`/api/workouts/?year=${year}`)
       .then((response) => {
-        console.log(response);
         setWorkouts(response.data);
       })
       .catch((error) => {
@@ -115,7 +116,9 @@ const MonthView = ({
       return (
         workoutDate.getFullYear() === year &&
         workoutDate.getMonth() === monthIndex &&
-        workoutDate.getDate() === day
+        workoutDate.getDate() === day &&
+        workout.set_groups &&
+        workout.set_groups.length > 0
       );
     });
   };
