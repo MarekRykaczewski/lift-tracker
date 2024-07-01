@@ -22,37 +22,57 @@ function RegisterAndLogout() {
 
 function App() {
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <BrowserRouter>
         <Nav />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/register" element={<RegisterAndLogout />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route
-            path="/workouts"
-            element={
-              <ProtectedRoute>
-                <Workouts />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/workouts/:date" element={<Workout />} />
-          <Route
-            path="/workouts/:date/set-groups/:id"
-            element={<SetGroupDetails />}
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <div className="flex-grow">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/register" element={<RegisterAndLogout />} />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/workouts"
+              element={
+                <ProtectedRoute>
+                  <Workouts />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/workouts/:date"
+              element={
+                <ProtectedRoute>
+                  <Workout />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/workouts/:date/set-groups/:id"
+              element={
+                <ProtectedRoute>
+                  <SetGroupDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
       </BrowserRouter>
     </div>
   );
