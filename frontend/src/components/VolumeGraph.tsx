@@ -1,6 +1,7 @@
 import {
   CategoryScale,
   Chart as ChartJS,
+  Filler,
   Legend,
   LineElement,
   LinearScale,
@@ -20,7 +21,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 type AggregatedData = {
@@ -214,8 +216,8 @@ const VolumeGraph: React.FC = () => {
       {
         label: metric.replace(/_/g, " "),
         data: dataPoints,
-        fill: false,
-        backgroundColor: "rgba(75,192,192,1)",
+        fill: true,
+        backgroundColor: "rgba(75,192,192,0.2)",
         borderColor: "rgba(75,192,192,1)",
       },
     ],
@@ -276,7 +278,7 @@ const VolumeGraph: React.FC = () => {
           <option value="all">All</option>
         </select>
       </div>
-      <div className="p-2 border bg-gray-50">
+      <div className="p-2 border bg-gray-50 dark:bg-gray-300">
         <Line data={data} options={options} />
       </div>
     </div>
