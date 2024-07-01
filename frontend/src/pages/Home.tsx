@@ -2,10 +2,8 @@ import VolumeGraph from "../components/VolumeGraph";
 
 const Home = () => {
   return (
-    <div className="min-h-screen w-full flex bg-gray-100 items-center justify-center">
-      <div className="p-3 w-full">
-        <VolumeGraph />
-      </div>
+    <div className="min-h-screen px-2 w-full flex items-center justify-center">
+      <VolumeGraph />
     </div>
   );
 };
