@@ -140,7 +140,7 @@ const Workout: React.FC = () => {
   }
 
   return (
-    <div className="w-full bg-gray-50">
+    <div className="w-full">
       <h1 className="font-bold flex items-center px-2 justify-center gap-3 text-2xl text-center py-3 bg-gray-900 text-white border-b-4 border-sky-500">
         <Link to={`/workouts/${calculateDate(date!, -1)}`}>
           <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700">

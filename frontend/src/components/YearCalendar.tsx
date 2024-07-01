@@ -124,7 +124,7 @@ const MonthView = ({
   };
 
   return (
-    <div className="flex flex-col items-center border border-gray-300 rounded-lg p-3 bg-gray-100">
+    <div className="flex flex-col items-center border-2 dark:border-gray-500 dark:bg-gray-700 rounded-lg p-3 bg-gray-100">
       <h3 className="mb-3 text-lg">{month}</h3>
       <div className="grid grid-cols-7 gap-1">
         {days.map((day) => {
@@ -133,12 +133,12 @@ const MonthView = ({
           return (
             <Link
               key={day}
-              className="relative overflow-hidden w-8 h-8 flex flex-col items-center justify-center bg-white border border-gray-300 rounded-md"
+              className="relative dark:bg-gray-800 overflow-hidden w-8 h-8 flex flex-col items-center justify-center bg-white border-2 dark:border-gray-500 rounded-md"
               to={`/workouts/${year}-${monthIndex + 1}-${day}`}
             >
               <span>{day}</span>
               {hasWorkout && (
-                <span className="w-full h-0.5 bottom-0 absolute rounded-full bg-blue-500" />
+                <span className="w-full h-[2.5px] bottom-0 absolute rounded-full bg-blue-500" />
               )}
             </Link>
           );

@@ -12,7 +12,7 @@ const Set: React.FC<SetProps> = ({ set, isSelected }) => {
   return (
     <div
       className={`flex justify-between p-1 border-b ${
-        isSelected ? "bg-sky-100" : ""
+        isSelected ? "bg-sky-100 dark:bg-gray-700" : ""
       }`}
     >
       <div>
@@ -20,11 +20,13 @@ const Set: React.FC<SetProps> = ({ set, isSelected }) => {
       </div>
       <div>
         <span className="font-bold mr-1">{set.display_weight}</span>
-        <span className="text-gray-700">{preferredUnit}</span>
+        <span className="text-gray-700 dark:text-gray-300">
+          {preferredUnit}
+        </span>
       </div>
       <div>
         <span className="font-bold mr-1">{set.reps}</span>
-        <span className="text-gray-700">reps</span>
+        <span className="text-gray-700 dark:text-gray-300">reps</span>
       </div>
     </div>
   );

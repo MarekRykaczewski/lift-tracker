@@ -27,7 +27,7 @@ const Settings: React.FC = () => {
           </label>
           <select
             id="preferredUnit"
-            className="border-2 px-2 py-2 text-sm rounded-sm placeholder:text-gray-300"
+            className="border-2 px-2 py-2 text-sm rounded-sm dark:bg-gray-900 placeholder:text-gray-300"
             value={preferredUnit}
             onChange={handleChange}
           >

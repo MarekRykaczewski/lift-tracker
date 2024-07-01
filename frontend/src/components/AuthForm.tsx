@@ -68,7 +68,7 @@ function AuthForm({ route, method }: AuthFormProps) {
           </label>
           <input
             name="username"
-            className="border-2 px-2 py-2 text-sm rounded-sm placeholder:text-gray-300"
+            className="border-2 px-2 py-2 text-sm rounded-sm dark:bg-gray-900 placeholder:text-gray-300"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -85,7 +85,7 @@ function AuthForm({ route, method }: AuthFormProps) {
               Your email
             </label>
             <input
-              className="border-2 px-2 py-2 text-sm rounded-sm placeholder:text-gray-300"
+              className="border-2 px-2 py-2 text-sm rounded-sm dark:bg-gray-900 placeholder:text-gray-300"
               type="email"
               name="email"
               value={email}
@@ -102,7 +102,7 @@ function AuthForm({ route, method }: AuthFormProps) {
             Your password
           </label>
           <input
-            className="border-2 px-2 py-2 text-sm rounded-sm placeholder:text-gray-300"
+            className="border-2 px-2 py-2 text-sm rounded-sm dark:bg-gray-900 placeholder:text-gray-300"
             name="password"
             type="password"
             value={password}

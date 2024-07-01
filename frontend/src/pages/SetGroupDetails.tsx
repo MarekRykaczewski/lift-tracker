@@ -108,7 +108,7 @@ const SetGroupDetails: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full bg-gray-100">
+    <div className="flex flex-col items-center w-full bg-gray-100 dark:bg-gray-900">
       <h1 className="w-full font-bold text-2xl text-center py-3 mb-3 bg-gray-900 text-white border-b-4 border-sky-500">
         Track
       </h1>

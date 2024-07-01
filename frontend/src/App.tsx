@@ -25,7 +25,7 @@ function App() {
     <div className="flex h-screen">
       <BrowserRouter>
         <Nav />
-        <div className="flex-grow">
+        <div className="flex-grow bg-white dark:bg-gray-900 text-black dark:text-white">
           <Routes>
             <Route
               path="/"
