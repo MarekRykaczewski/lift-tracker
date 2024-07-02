@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 
@@ -52,7 +52,7 @@ function AuthForm({ route, method }: AuthFormProps) {
       <div className="border-b border-gray-100 p-6">
         <h1 className="font-bold text-2xl uppercase mb-2">{name}</h1>
         <p className="text-gray-400 uppercase text-xs mb-2 font-bold">
-          Sign in to your account
+          {method === "login" ? "Sign in to your account" : "Create an account"}
         </p>
       </div>
       <div className="flex flex-col p-6 gap-5">
@@ -118,6 +118,17 @@ function AuthForm({ route, method }: AuthFormProps) {
         >
           {name}
         </button>
+        {method === "login" ? (
+          <Link to={"/register"}>
+            Don't have an account?{" "}
+            <span className="text-blue-500 underline">Register</span>
+          </Link>
+        ) : (
+          <Link to={"/login"}>
+            Already have an account?{" "}
+            <span className="text-blue-500 underline">Login</span>
+          </Link>
+        )}
       </div>
     </form>
   );
