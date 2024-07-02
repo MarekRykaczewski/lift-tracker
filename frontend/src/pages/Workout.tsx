@@ -5,6 +5,7 @@ import api from "../api";
 import SetGroup from "../components/SetGroup";
 import SetGroupForm from "../components/SetGroupForm";
 import { SetGroup as SetGroupType, Workout as WorkoutType } from "../types";
+import WorkoutActions from "../components/WorkoutActions";
 
 interface Params {
   [key: string]: string | undefined;
@@ -157,6 +158,11 @@ const Workout: React.FC = () => {
       </h1>
       {workout ? (
         <div className="flex flex-col items-center gap-5 p-5">
+          <WorkoutActions
+            workoutId={workout.id}
+            onActionComplete={handleGroupSetCreated}
+          />
+
           <SetGroupForm
             onSuccess={handleGroupSetCreated}
             date={date!}
