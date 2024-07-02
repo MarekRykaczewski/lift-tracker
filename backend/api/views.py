@@ -148,3 +148,21 @@ class SetGroupDestroyView(generics.DestroyAPIView):
     queryset = SetGroup.objects.all()
     serializer_class = SetGroupSerializer
     permission_classes = [IsAuthenticated]
+
+class WorkoutDestroyView(generics.DestroyAPIView):
+    queryset = Workout.objects.all()
+    serializer_class = WorkoutSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        workout_id = self.kwargs['pk']
+        user = self.request.user
+        try:
+            return Workout.objects.get(id=workout_id, user=user)
+        except Workout.DoesNotExist:
+            raise Http404("Workout not found")
+    
+    def delete(self, request, *args, **kwargs):
+        workout = self.get_object()
+        self.perform_destroy(workout)
+        return Response(status=status.HTTP_204_NO_CONTENT)
