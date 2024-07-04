@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../api";
+import CopyWorkout from "./CopyWorkout";
 
 interface WorkoutActionsProps {
   workoutId: number;
@@ -14,14 +15,6 @@ const WorkoutActions: React.FC<WorkoutActionsProps> = ({
   const { date } = useParams<{ date: string }>();
   const navigate = useNavigate();
 
-  const handleCopyWorkout = async () => {
-    // TODO
-  };
-
-  const handleMoveWorkout = async () => {
-    // TODO
-  };
-
   const handleDeleteWorkout = async () => {
     try {
       await api.delete(`/api/workouts/${workoutId}/`);
@@ -34,18 +27,7 @@ const WorkoutActions: React.FC<WorkoutActionsProps> = ({
 
   return (
     <div className="flex gap-3">
-      <button
-        className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-700"
-        onClick={handleCopyWorkout}
-      >
-        Copy Workout
-      </button>
-      <button
-        className="px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-700"
-        onClick={handleMoveWorkout}
-      >
-        Move Workout
-      </button>
+      <CopyWorkout onCopyComplete={onActionComplete} workoutDate={date!} />
       <button
         className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700"
         onClick={handleDeleteWorkout}
