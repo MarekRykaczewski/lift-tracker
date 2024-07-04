@@ -6,6 +6,7 @@ from .models import User, Workout, Set, SetGroup, Exercise
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import get_user_model
 from django.http import Http404
+from datetime import datetime
 
 User = get_user_model()
 
@@ -166,3 +167,42 @@ class WorkoutDestroyView(generics.DestroyAPIView):
         workout = self.get_object()
         self.perform_destroy(workout)
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class WorkoutCopyView(generics.GenericAPIView):
+    queryset = Workout.objects.all()
+    serializer_class = WorkoutSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        source_date = self.kwargs['date']
+        target_date = request.data.get('target_date')
+
+        if not target_date:
+            return Response({'detail': 'Target date is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            source_date = datetime.strptime(source_date, '%Y-%m-%d').date()
+            target_date = datetime.strptime(target_date, '%Y-%m-%d').date()
+        except ValueError:
+            return Response({'detail': 'Invalid date format.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            source_workout = Workout.objects.get(date=source_date, user=user)
+        except Workout.DoesNotExist:
+            raise Http404("Source workout not found")
+        
+        existing_workout = Workout.objects.filter(date=target_date, user=user)
+
+        if existing_workout.exists():
+            return Response({'detail': 'Workout already exists on the target date.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        new_workout = Workout.objects.create(user=user, date=target_date, notes=source_workout.notes)
+
+        for set_group in source_workout.set_groups.all():
+            new_set_group = SetGroup.objects.create(workout=new_workout, exercise=set_group.exercise, order=set_group.order)
+            for set in set_group.sets.all():
+                Set.objects.create(set_group=new_set_group, order=set.order, reps=set.reps, weight=set.weight)
+
+        serializer = self.get_serializer(new_workout)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
