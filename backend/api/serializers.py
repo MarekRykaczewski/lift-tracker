@@ -70,3 +70,6 @@ class WorkoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workout
         fields = ['id', 'date', 'notes', 'set_groups']
+
+class MoveWorkoutSerializer(serializers.Serializer):
+    target_date = serializers.DateField()

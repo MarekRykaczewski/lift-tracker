@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../api";
 import CopyWorkout from "./CopyWorkout";
+import MoveWorkout from "./MoveWorkout";
 
 interface WorkoutActionsProps {
   workoutId: number;
@@ -28,6 +29,8 @@ const WorkoutActions: React.FC<WorkoutActionsProps> = ({
   return (
     <div className="flex gap-3">
       <CopyWorkout onCopyComplete={onActionComplete} workoutDate={date!} />
+      <MoveWorkout workoutDate={date!} onMoveComplete={onActionComplete} />
+
       <button
         className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700"
         onClick={handleDeleteWorkout}

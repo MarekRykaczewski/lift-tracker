@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import generics, status
 from rest_framework.response import Response
-from .serializers import UserSerializer, UserProfileSerializer, WorkoutSerializer, SetSerializer, SetGroupSerializer, ExerciseSerializer
+from .serializers import MoveWorkoutSerializer, UserSerializer, UserProfileSerializer, WorkoutSerializer, SetSerializer, SetGroupSerializer, ExerciseSerializer
 from .models import User, Workout, Set, SetGroup, Exercise
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import get_user_model
@@ -206,3 +206,22 @@ class WorkoutCopyView(generics.GenericAPIView):
 
         serializer = self.get_serializer(new_workout)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+class MoveWorkoutView(generics.GenericAPIView):
+    serializer_class = MoveWorkoutSerializer
+
+    def put(self, request, *args, **kwargs):
+        workout_date = self.kwargs.get('date') 
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            target_date = serializer.validated_data['target_date']
+            try:
+                workout = Workout.objects.get(date=workout_date)
+                workout.date = target_date
+                workout.save()
+                return Response({'message': 'Workout moved successfully'}, status=status.HTTP_200_OK)
+            except Workout.DoesNotExist:
+                return Response({'error': 'Workout not found'}, status=status.HTTP_404_NOT_FOUND)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
