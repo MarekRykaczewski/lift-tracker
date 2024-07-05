@@ -7,6 +7,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import get_user_model
 from django.http import Http404
 from datetime import datetime
+from django.http import HttpResponse
+import csv
 
 User = get_user_model()
 
@@ -225,3 +227,25 @@ class MoveWorkoutView(generics.GenericAPIView):
             except Exception as e:
                 return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class ExportWorkoutsView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="workouts.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(['Date', 'Exercise', 'Set Order', 'Reps', 'Weight', 'Notes'])
+
+        workouts = Workout.objects.filter(user=request.user).order_by('date')
+
+        for workout in workouts:
+            set_groups = SetGroup.objects.filter(workout=workout).order_by('order')
+            for set_group in set_groups:
+                sets = Set.objects.filter(set_group=set_group).order_by('order')
+                for set_ in sets:
+                    writer.writerow([workout.date, set_group.exercise.name, set_.order, set_.reps, set_.weight, workout.notes])
+
+        return response
