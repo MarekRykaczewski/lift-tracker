@@ -53,37 +53,42 @@ const YearCalendar = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-5">
-      <div className="flex items-center mb-5">
-        <button
-          onClick={handlePreviousYear}
-          className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-        >
-          Previous
-        </button>
-        <h2 className="mx-5 text-2xl">{year}</h2>
-        <button
-          onClick={handleNextYear}
-          className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-        >
-          Next
-        </button>
-      </div>
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
-          {months.map((month, index) => (
-            <MonthView
-              key={index}
-              month={month}
-              year={year}
-              monthIndex={index}
-              workouts={workouts}
-            />
-          ))}
+    <div className="w-full flex flex-col">
+      <div className="w-full text-2xl py-3 bg-gray-900 text-white border-b-4 border-sky-500">
+        <div className="w-fit ml-auto mr-auto flex items-center">
+          <button
+            onClick={handlePreviousYear}
+            className="px-3 w-32 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
+          >
+            Previous
+          </button>
+          <h2 className="mx-5 text-2xl">{year}</h2>
+          <button
+            onClick={handleNextYear}
+            className="px-3 w-32 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
+          >
+            Next
+          </button>
         </div>
-      )}
+      </div>
+
+      <div>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <div className="grid p-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full">
+            {months.map((month, index) => (
+              <MonthView
+                key={index}
+                month={month}
+                year={year}
+                monthIndex={index}
+                workouts={workouts}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
