@@ -249,3 +249,12 @@ class ExportWorkoutsView(generics.GenericAPIView):
                     writer.writerow([workout.date, set_group.exercise.name, set_.order, set_.reps, set_.weight, workout.notes])
 
         return response
+    
+class GetWorkoutBreakdownView(generics.GenericAPIView):
+    serializer_class = WorkoutSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Workout.objects.filter(user=self.request.user).prefetch_related(
+            'set_groups__sets', 'set_groups__exercise'
+        )
