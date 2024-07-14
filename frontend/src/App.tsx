@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="flex h-screen sm:flex-row flex-col">
       <BrowserRouter>
-        <div className="sm:w-1/4 ">
+        <div className="sm:max-w-[200px] w-full">
           <Nav />
         </div>
 
