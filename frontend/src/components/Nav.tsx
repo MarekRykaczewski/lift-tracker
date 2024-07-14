@@ -75,7 +75,7 @@ const Nav = () => {
       </nav>
 
       {/* Navigation for smaller viewports */}
-      <div className="flex sm:hidden text-white bg-gray-900 items-center sm:px-0 sm:justify-center justify-between w-full">
+      <div className="flex sm:hidden bg-gray-200 dark:text-white dark:bg-gray-800 items-center sm:px-0 sm:justify-center justify-between w-full">
         <h1 className="sm:text-2xl text-4xl p-2 font-bold">LiftTrackers</h1>
 
         <button
@@ -100,15 +100,11 @@ const Nav = () => {
       </div>
 
       <nav
-        className={`fixed top-0 right-0 h-full w-64 bg-gray-100 dark:bg-gray-900 transform ${
+        className={`fixed top-0 right-0 h-full px-2 w-64 bg-gray-100 dark:bg-gray-800 transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-300 ease-in-out z-50 sm:hidden`}
       >
         <div className="flex flex-col h-full">
-          <div className="px-4 py-2 self-end dark:text-white font-semibold">
-            <DarkModeToggle />
-          </div>
-          <div className="border-b-2 mb-2 border-gray-300 dark:border-gray-700" />
           <div className="flex flex-col gap-2 text-right border-gray-300 dark:border-gray-700">
             <NavLink
               to="/"
@@ -148,7 +144,13 @@ const Nav = () => {
             </NavLink>
           </div>
           <div className="border-b-2 my-2 border-gray-300 dark:border-gray-700" />
-          <div className="self-end px-2 w-full">
+          <div className="px-4 py-2 self-end w-full dark:bg-gray-700 bg-gray-200 rounded-lg dark:text-white font-semibold">
+            <div className="px-4 py-2 w-full">
+              <DarkModeToggle />
+            </div>
+
+            <div className="border-b-2 my-2 border-gray-300 dark:border-gray-500" />
+
             <LogoutButton />
           </div>
         </div>
