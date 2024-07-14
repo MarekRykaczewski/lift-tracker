@@ -20,13 +20,13 @@ function DarkModeToggle() {
   };
 
   return (
-    <div className="flex items-center space-x-2 font-semibold">
-      <span className="text-sm dark:text-white">
+    <div className="flex flex-wrap items-center w-full gap-2 font-semibold">
+      <span className="text-base dark:text-white">
         {darkMode ? "Dark Mode" : "Light Mode"}
       </span>
       <button
         onClick={toggleDarkMode}
-        className={`relative inline-flex items-center h-6 rounded-full w-11 focus:outline-none ${
+        className={`relatives inline-flex items-center h-6 rounded-full w-11 focus:outline-none ${
           darkMode ? "bg-gray-600" : "bg-gray-300"
         }`}
       >

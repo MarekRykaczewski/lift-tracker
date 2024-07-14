@@ -22,10 +22,13 @@ function RegisterAndLogout() {
 
 function App() {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen sm:flex-row flex-col">
       <BrowserRouter>
-        <Nav />
-        <div className="flex-grow bg-white dark:bg-gray-900 text-black dark:text-white">
+        <div className="sm:w-1/4 ">
+          <Nav />
+        </div>
+
+        <div className="w-full h-full bg-white dark:bg-gray-900 text-black dark:text-white">
           <Routes>
             <Route
               path="/"

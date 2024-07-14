@@ -76,7 +76,7 @@ const YearCalendar = () => {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <div className="grid p-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full">
+          <div className="grid h-[calc(100vh-68px)] overflow-y-scroll p-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full">
             {months.map((month, index) => (
               <MonthView
                 key={index}

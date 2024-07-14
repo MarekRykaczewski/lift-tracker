@@ -225,6 +225,7 @@ const VolumeGraph: React.FC = () => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top" as const,
@@ -237,7 +238,7 @@ const VolumeGraph: React.FC = () => {
   };
 
   return (
-    <div className="p-6 border w-[80vw]">
+    <div className="p-4 border flex flex-col h-full w-full">
       <h1 className="text-2xl font-bold mb-4">Workout Metrics</h1>
       <div className="mb-4">
         <select
@@ -278,7 +279,7 @@ const VolumeGraph: React.FC = () => {
           <option value="all">All</option>
         </select>
       </div>
-      <div className="p-2 border bg-gray-50 dark:bg-gray-300">
+      <div className="border relative h-full w-full bg-gray-50 dark:bg-gray-300">
         <Line data={data} options={options} />
       </div>
     </div>

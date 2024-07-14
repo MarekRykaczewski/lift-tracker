@@ -166,10 +166,10 @@ const WorkoutBreakdown: React.FC = () => {
   }) => setStartDate(e.target.value);
 
   return (
-    <div className="flex flex-col items-center p-4 border w-full lg:w-1/2 mx-auto bg-white dark:bg-gray-700 dark:border-gray-500 shadow-lg">
-      <h1 className="text-2xl font-bold mb-4">Workout Breakdown</h1>
+    <div className="flex flex-col items-center p-4 border w-full h-full bg-white dark:bg-gray-700 dark:border-gray-500 shadow-lg">
+      <h1 className="text-2xl font-bold mb-2">Workout Breakdown</h1>
 
-      <div className="flex flex-col lg:flex-row w-full mb-6 justify-between">
+      <div className="flex flex-col lg:flex-row w-full justify-between">
         <div className="mb-4 lg:mb-0">
           <label
             className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
@@ -246,7 +246,7 @@ const WorkoutBreakdown: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-6 w-full">
+      <div className="mt-4 w-full">
         <table className="w-full table-auto border-collapse border">
           <thead>
             <tr>
