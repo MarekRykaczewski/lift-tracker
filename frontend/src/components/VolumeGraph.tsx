@@ -238,11 +238,11 @@ const VolumeGraph: React.FC = () => {
   };
 
   return (
-    <div className="p-4 border flex flex-col h-full w-full">
+    <div className="p-4 dark:bg-gray-800 border-2 dark:border-gray-700 flex flex-col h-full w-full">
       <h1 className="text-2xl font-bold mb-4">Workout Metrics</h1>
       <div className="mb-4">
         <select
-          className="border rounded dark:bg-gray-900 p-2 mr-2"
+          className="border dark:border-gray-500 dark:bg-gray-700 p-2 mr-2"
           value={metric}
           onChange={(e) => setMetric(e.target.value)}
         >
@@ -268,7 +268,7 @@ const VolumeGraph: React.FC = () => {
           </optgroup>
         </select>
         <select
-          className="border rounded p-2 dark:bg-gray-900"
+          className="border dark:border-gray-500 p-2 dark:bg-gray-700"
           value={timeInterval}
           onChange={(e) => setTimeInterval(e.target.value)}
         >

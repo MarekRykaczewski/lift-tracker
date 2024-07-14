@@ -54,7 +54,7 @@ const YearCalendar = () => {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="w-full text-2xl py-3 bg-gray-900 text-white border-b-4 border-sky-500">
+      <div className="w-full text-2xl py-3 dark:bg-gray-700 bg-gray-200 text-black dark:text-white border-b-4 border-sky-500">
         <div className="w-fit ml-auto mr-auto flex items-center">
           <button
             onClick={handlePreviousYear}
@@ -129,7 +129,7 @@ const MonthView = ({
   };
 
   return (
-    <div className="flex flex-col items-center border-2 dark:border-gray-500 dark:bg-gray-700 rounded-lg p-3 bg-gray-100">
+    <div className="flex flex-col items-center border-2 dark:border-gray-700 dark:bg-gray-800 rounded-lg p-3 bg-gray-100">
       <h3 className="mb-3 text-lg">{month}</h3>
       <div className="grid grid-cols-7 gap-1">
         {days.map((day) => {
@@ -138,7 +138,7 @@ const MonthView = ({
           return (
             <Link
               key={day}
-              className="relative dark:bg-gray-800 overflow-hidden w-8 h-8 flex flex-col items-center justify-center bg-white border-2 dark:border-gray-500 rounded-md"
+              className="relative dark:bg-gray-700 overflow-hidden w-8 h-8 flex flex-col items-center justify-center bg-white border-2 dark:border-gray-600 rounded-md"
               to={`/workouts/${year}-${monthIndex + 1}-${day}`}
             >
               <span>{day}</span>

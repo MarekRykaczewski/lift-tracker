@@ -166,7 +166,7 @@ const WorkoutBreakdown: React.FC = () => {
   }) => setStartDate(e.target.value);
 
   return (
-    <div className="flex flex-col items-center p-4 border w-full h-full bg-white dark:bg-gray-700 dark:border-gray-500 shadow-lg">
+    <div className="flex flex-col items-center p-4 border-2 w-full h-full bg-white dark:bg-gray-800 dark:border-gray-700 shadow-lg">
       <h1 className="text-2xl font-bold mb-2">Workout Breakdown</h1>
 
       <div className="flex flex-col lg:flex-row w-full justify-between">
@@ -181,7 +181,7 @@ const WorkoutBreakdown: React.FC = () => {
             id="breakdown"
             value={breakdown}
             onChange={handleBreakdownChange}
-            className="block appearance-none w-full dark:bg-gray-700 bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            className="block border dark:border-gray-500 appearance-none w-full dark:bg-gray-700 bg-white px-4 py-2 pr-8 shadow leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="Number of Sets">Number of Sets</option>
             <option value="Number of Reps">Number of Reps</option>
@@ -200,7 +200,7 @@ const WorkoutBreakdown: React.FC = () => {
             id="period"
             value={period}
             onChange={handlePeriodChange}
-            className="block appearance-none w-full bg-white dark:bg-gray-700 border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            className="block dark:border-gray-500 appearance-none w-full bg-white dark:bg-gray-700 border px-4 py-2 pr-8 shadow leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="Week">Week</option>
             <option value="Month">Month</option>
@@ -210,7 +210,7 @@ const WorkoutBreakdown: React.FC = () => {
 
         <div className="mb-4 lg:mb-0">
           <label
-            className="block text-gray-700  dark:text-white text-sm font-bold mb-2"
+            className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
             htmlFor="date"
           >
             DATE
@@ -220,7 +220,7 @@ const WorkoutBreakdown: React.FC = () => {
             id="date"
             value={startDate}
             onChange={handleStartDateChange}
-            className="appearance-none w-full bg-white dark:bg-gray-700 border border-gray-400 hover:border-gray-500 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            className="appearance-none dark:border-gray-500 w-full bg-white dark:bg-gray-700 border px-4 py-2 shadow leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
       </div>
@@ -236,31 +236,41 @@ const WorkoutBreakdown: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-2 gap-4 w-full">
-        <div className="text-center border p-2">
+        <div className="dark:bg-gray-700 text-center border dark:border-gray-500 p-2">
           <h2 className="font-bold">TOTAL WORKOUTS</h2>
           <p className="text-blue-500 text-xl">{workoutData.length}</p>
         </div>
-        <div className="text-center border p-2">
+        <div className="dark:bg-gray-700 text-center border dark:border-gray-500 p-2">
           <h2 className="font-bold">TOTAL SETS</h2>
           <p className="text-blue-500 text-xl">{totalSets}</p>
         </div>
       </div>
 
       <div className="mt-4 w-full">
-        <table className="w-full table-auto border-collapse border">
+        <table className="w-full table-auto dark:bg-gray-700">
           <thead>
             <tr>
-              <th className="border px-4 py-2">Category</th>
-              <th className="border px-4 py-2">{breakdown}</th>
-              <th className="border px-4 py-2">Percentage</th>
+              <th className="border dark:border-gray-500 px-4 py-2">
+                Category
+              </th>
+              <th className="border dark:border-gray-500 px-4 py-2">
+                {breakdown}
+              </th>
+              <th className="border dark:border-gray-500 px-4 py-2">
+                Percentage
+              </th>
             </tr>
           </thead>
           <tbody>
             {Object.keys(workoutCounts).map((label, index) => (
               <tr key={index}>
-                <td className="border px-4 py-2">{label}</td>
-                <td className="border px-4 py-2">{workoutCounts[label]}</td>
-                <td className="border px-4 py-2">
+                <td className="border dark:border-gray-500 px-4 py-2">
+                  {label}
+                </td>
+                <td className="border dark:border-gray-500 px-4 py-2">
+                  {workoutCounts[label]}
+                </td>
+                <td className="border dark:border-gray-500 px-4 py-2">
                   {sumOfBreakdownValues > 0
                     ? (
                         (workoutCounts[label] / sumOfBreakdownValues) *

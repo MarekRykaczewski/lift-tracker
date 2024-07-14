@@ -7,7 +7,7 @@ const Home = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-start">
-      <div className="w-full py-3 flex items-center px-2 justify-center gap-3 text-2xl text-center  bg-gray-900 text-white border-b-4 border-sky-500">
+      <div className="w-full py-3 flex items-center px-2 justify-center gap-3 text-2xl text-center dark:bg-gray-700 bg-gray-200 text-black dark:text-white border-b-4 border-sky-500">
         <button
           className={`mr-2 ${
             view === "workout" ? "bg-blue-700" : ""

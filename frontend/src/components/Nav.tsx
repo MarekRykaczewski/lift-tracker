@@ -19,26 +19,6 @@ const Nav = () => {
             <h1 className="sm:text-2xl text-4xl p-2 font-bold text-gray-800 dark:text-gray-200">
               LiftTrackers
             </h1>
-
-            <button
-              className="block sm:hidden p-2 text-gray-800 dark:text-gray-200 focus:outline-none"
-              onClick={toggleNav}
-            >
-              <svg
-                className="w-8 h-8"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
-              </svg>
-            </button>
           </div>
         </div>
 
@@ -81,7 +61,6 @@ const Nav = () => {
             Settings
           </NavLink>
         </div>
-        <div className="border-b-2 my-2 border-gray-300 dark:border-gray-700" />
         <div className="mt-auto mb-2 dark:bg-gray-700 bg-gray-200 rounded-lg">
           <div className="px-4 py-2 self-end dark:text-white font-semibold">
             <div className="px-4 py-2 w-full">
@@ -96,13 +75,11 @@ const Nav = () => {
       </nav>
 
       {/* Navigation for smaller viewports */}
-      <div className="flex sm:hidden dark:bg-gray-900 items-center sm:px-0 sm:justify-center justify-between w-full">
-        <h1 className="sm:text-2xl text-4xl p-2 font-bold text-gray-800 dark:text-gray-200">
-          LiftTrackers
-        </h1>
+      <div className="flex sm:hidden text-white bg-gray-900 items-center sm:px-0 sm:justify-center justify-between w-full">
+        <h1 className="sm:text-2xl text-4xl p-2 font-bold">LiftTrackers</h1>
 
         <button
-          className="block sm:hidden p-2 text-gray-800 dark:text-gray-200 focus:outline-none"
+          className="block sm:hidden p-2 focus:outline-none"
           onClick={toggleNav}
         >
           <svg
@@ -131,7 +108,7 @@ const Nav = () => {
           <div className="px-4 py-2 self-end dark:text-white font-semibold">
             <DarkModeToggle />
           </div>
-          <div className="border-b-2 my-2 border-gray-300 dark:border-gray-700" />
+          <div className="border-b-2 mb-2 border-gray-300 dark:border-gray-700" />
           <div className="flex flex-col gap-2 text-right border-gray-300 dark:border-gray-700">
             <NavLink
               to="/"

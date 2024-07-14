@@ -62,7 +62,7 @@ const SetGroupForm: React.FC<SetGroupFormProps> = ({
 
   return (
     <form
-      className="flex bg-gray-100 dark:bg-gray-900 max-w-md w-full flex-col border self-center ml-auto mr-auto rounded-sm p-6 gap-5"
+      className="flex bg-gray-100 dark:bg-gray-800 dark:border-gray-700 max-w-md w-full flex-col border-2 self-center ml-auto mr-auto rounded-sm p-6 gap-5"
       onSubmit={handleSubmit}
     >
       <div className="flex flex-col gap-1">
@@ -73,7 +73,7 @@ const SetGroupForm: React.FC<SetGroupFormProps> = ({
           Choose Exercise
         </label>
         <select
-          className="border-2 px-2 py-2 dark:bg-gray-900 text-sm rounded-sm"
+          className="border-2 px-2 py-2 dark:bg-gray-600 dark:border-gray-700 text-sm rounded-sm"
           value={selectedExercise}
           onChange={(event) => setSelectedExercise(event.target.value)}
           required

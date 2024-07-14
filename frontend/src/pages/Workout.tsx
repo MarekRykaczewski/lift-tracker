@@ -4,8 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import api from "../api";
 import SetGroup from "../components/SetGroup";
 import SetGroupForm from "../components/SetGroupForm";
-import { SetGroup as SetGroupType, Workout as WorkoutType } from "../types";
 import WorkoutActions from "../components/WorkoutActions";
+import { SetGroup as SetGroupType, Workout as WorkoutType } from "../types";
 
 interface Params {
   [key: string]: string | undefined;
@@ -142,7 +142,7 @@ const Workout: React.FC = () => {
 
   return (
     <div className="w-full">
-      <h1 className="font-bold flex items-center px-2 justify-center gap-3 text-2xl text-center py-3 bg-gray-900 text-white border-b-4 border-sky-500">
+      <h1 className="font-bold flex items-center px-2 justify-center gap-3 text-center w-full text-2xl py-3 dark:bg-gray-700 bg-gray-200 text-black dark:text-white border-b-4 border-sky-500 ">
         <Link to={`/workouts/${calculateDate(date!, -1)}`}>
           <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700">
             Prev
@@ -182,13 +182,13 @@ const Workout: React.FC = () => {
           )}
         </div>
       ) : (
-        <div className="p-3">
-          <div className="flex max-w-md w-full flex-col border self-center ml-auto mr-auto rounded-sm p-6 gap-5">
+        <div className="p-3 ">
+          <div className="flex dark:bg-gray-800 dark:border-gray-700 max-w-md w-full flex-col border self-center ml-auto mr-auto rounded-sm p-6 gap-5">
             <p className="uppercase mb-2 text-xs font-bold text-gray-400">
               No workout found for this date.
             </p>
             <button
-              className="border-2 px-2 py-2 text-sm rounded-sm placeholder:text-gray-300"
+              className="bg-blue-500 px-2 py-2 text-sm rounded-sm placeholder:text-gray-300"
               onClick={handleCreateWorkout}
             >
               Create Workout

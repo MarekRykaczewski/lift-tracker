@@ -11,7 +11,7 @@ const Set: React.FC<SetProps> = ({ set, isSelected }) => {
 
   return (
     <div
-      className={`flex justify-between p-1 border-b ${
+      className={`flex justify-between p-1 border-b dark:border-gray-500 ${
         isSelected ? "bg-sky-100 dark:bg-gray-700" : ""
       }`}
     >
