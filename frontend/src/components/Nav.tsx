@@ -76,7 +76,7 @@ const Nav = () => {
 
       {/* Navigation for smaller viewports */}
       <div className="flex sm:hidden bg-gray-200 dark:text-white dark:bg-gray-800 items-center sm:px-0 sm:justify-center justify-between w-full">
-        <h1 className="sm:text-2xl text-4xl p-2 font-bold">LiftTrackers</h1>
+        <h1 className="sm:text-2xl text-4xl p-2 font-bold">LiftTracker</h1>
 
         <button
           className="block sm:hidden p-2 focus:outline-none"
