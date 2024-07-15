@@ -166,7 +166,7 @@ const WorkoutBreakdown: React.FC = () => {
   }) => setStartDate(e.target.value);
 
   return (
-    <div className="flex flex-col items-center p-4 border-2 w-full h-full bg-gray-50 dark:bg-gray-800 dark:border-gray-700 shadow-lg">
+    <div className="flex flex-col items-center p-4 border-2 w-full h-full bg-gray-100 dark:bg-gray-800 dark:border-gray-700 shadow-lg">
       <h1 className="text-2xl font-bold mb-2">Workout Breakdown</h1>
 
       <div className="flex flex-col lg:flex-row w-full justify-between">

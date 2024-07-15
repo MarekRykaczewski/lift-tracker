@@ -238,7 +238,7 @@ const VolumeGraph: React.FC = () => {
   };
 
   return (
-    <div className="p-4 bg-gray-50 dark:bg-gray-800 border-2 dark:border-gray-700 flex flex-col h-full w-full">
+    <div className="p-4 bg-gray-100 dark:bg-gray-800 border-2 dark:border-gray-700 flex flex-col h-full w-full">
       <h1 className="text-2xl font-bold mb-4">Workout Metrics</h1>
       <div className="mb-4">
         <select
