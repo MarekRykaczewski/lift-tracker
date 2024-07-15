@@ -46,10 +46,10 @@ function AuthForm({ route, method }: AuthFormProps) {
 
   return (
     <form
-      className="flex max-w-md w-full flex-col border self-center ml-auto mr-auto rounded-sm"
+      className="flex dark:bg-gray-800 bg-gray-100 dark:border-gray-600 max-w-md w-full flex-col border-2 self-center ml-auto mr-auto rounded-sm"
       onSubmit={handleSubmit}
     >
-      <div className="border-b border-gray-100 p-6">
+      <div className="border-b border-gray-100 dark:border-gray-500 p-6">
         <h1 className="font-bold text-2xl uppercase mb-2">{name}</h1>
         <p className="text-gray-400 uppercase text-xs mb-2 font-bold">
           {method === "login" ? "Sign in to your account" : "Create an account"}
@@ -68,7 +68,7 @@ function AuthForm({ route, method }: AuthFormProps) {
           </label>
           <input
             name="username"
-            className="border-2 px-2 py-2 text-sm rounded-sm dark:bg-gray-900 placeholder:text-gray-300"
+            className="border-2 dark:border-gray-600 px-2 py-2 text-sm rounded-sm dark:bg-gray-700 placeholder:text-gray-300"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -85,7 +85,7 @@ function AuthForm({ route, method }: AuthFormProps) {
               Your email
             </label>
             <input
-              className="border-2 px-2 py-2 text-sm rounded-sm dark:bg-gray-900 placeholder:text-gray-300"
+              className="border-2 dark:border-gray-600 px-2 py-2 text-sm rounded-sm dark:bg-gray-700 placeholder:text-gray-300"
               type="email"
               name="email"
               value={email}
@@ -102,7 +102,7 @@ function AuthForm({ route, method }: AuthFormProps) {
             Your password
           </label>
           <input
-            className="border-2 px-2 py-2 text-sm rounded-sm dark:bg-gray-900 placeholder:text-gray-300"
+            className="border-2 dark:border-gray-600 px-2 py-2 text-sm rounded-sm dark:bg-gray-700 placeholder:text-gray-300"
             name="password"
             type="password"
             value={password}
