@@ -10,6 +10,34 @@ const Nav = () => {
     setIsOpen(!isOpen);
   };
 
+  const navLinks = [
+    { path: "/", label: "Home" },
+    { path: "/workouts", label: "Workouts" },
+    { path: "/records", label: "Records" },
+    { path: "/settings", label: "Settings" },
+  ];
+
+  const renderNavLinks = (isMobile = false) =>
+    navLinks.map(({ path, label }) => (
+      <NavLink
+        key={path}
+        to={path}
+        className={({ isActive }) =>
+          `px-4 font-semibold py-2 w-full ${
+            isActive
+              ? "font-bold text-blue-600"
+              : "text-gray-800 dark:text-gray-200"
+          } ${
+            isMobile
+              ? "hover:bg-gray-300 dark:hover:bg-gray-700"
+              : "hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md"
+          }`
+        }
+      >
+        {label}
+      </NavLink>
+    ));
+
   return (
     <div className="relative">
       {/* Navigation for larger viewports */}
@@ -24,54 +52,7 @@ const Nav = () => {
 
         <div className="border-b-2 my-2 border-gray-300 dark:border-gray-700" />
         <div className="flex flex-col gap-2 border-gray-300 dark:border-gray-700">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `px-4 font-semibold py-2 w-full ${
-                isActive
-                  ? "font-bold text-blue-600"
-                  : "text-gray-800 dark:text-gray-200"
-              } hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md`
-            }
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/workouts"
-            className={({ isActive }) =>
-              `px-4 font-semibold py-2 w-full ${
-                isActive
-                  ? "font-bold text-blue-500"
-                  : "text-gray-800 dark:text-gray-200"
-              } hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md`
-            }
-          >
-            Workouts
-          </NavLink>
-          <NavLink
-            to="/records"
-            className={({ isActive }) =>
-              `px-4 font-semibold py-2 w-full ${
-                isActive
-                  ? "font-bold text-blue-500"
-                  : "text-gray-800 dark:text-gray-200"
-              } hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md`
-            }
-          >
-            Records
-          </NavLink>
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              `px-4 font-semibold py-2 w-full ${
-                isActive
-                  ? "font-bold text-blue-500"
-                  : "text-gray-800 dark:text-gray-200"
-              } hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md`
-            }
-          >
-            Settings
-          </NavLink>
+          {renderNavLinks()}
         </div>
         <div className="mt-auto mb-2 dark:bg-gray-700 bg-gray-200 rounded-lg">
           <div className="px-4 py-2 self-end dark:text-white font-semibold">
@@ -118,42 +99,7 @@ const Nav = () => {
       >
         <div className="flex flex-col h-full">
           <div className="flex flex-col gap-2 text-right border-gray-300 dark:border-gray-700">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `px-4 font-semibold py-2 w-full ${
-                  isActive
-                    ? "font-bold text-blue-600"
-                    : "text-gray-800 dark:text-gray-200"
-                } hover:bg-gray-300 dark:hover:bg-gray-700`
-              }
-            >
-              Home
-            </NavLink>
-            <NavLink
-              to="/workouts"
-              className={({ isActive }) =>
-                `px-4 font-semibold py-2 w-full ${
-                  isActive
-                    ? "font-bold text-blue-500"
-                    : "text-gray-800 dark:text-gray-200"
-                } hover:bg-gray-300 dark:hover:bg-gray-700`
-              }
-            >
-              Workouts
-            </NavLink>
-            <NavLink
-              to="/settings"
-              className={({ isActive }) =>
-                `px-4 font-semibold py-2 w-full ${
-                  isActive
-                    ? "font-bold text-blue-600"
-                    : "text-gray-800 dark:text-gray-200"
-                } hover:bg-gray-300 dark:hover:bg-gray-700`
-              }
-            >
-              Settings
-            </NavLink>
+            {renderNavLinks(true)}
           </div>
           <div className="border-b-2 my-2 border-gray-300 dark:border-gray-700" />
           <div className="px-4 py-2 self-end w-full dark:bg-gray-700 bg-gray-200 rounded-lg dark:text-white font-semibold">
