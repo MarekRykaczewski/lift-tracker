@@ -49,6 +49,18 @@ const Nav = () => {
             Workouts
           </NavLink>
           <NavLink
+            to="/records"
+            className={({ isActive }) =>
+              `px-4 font-semibold py-2 w-full ${
+                isActive
+                  ? "font-bold text-blue-500"
+                  : "text-gray-800 dark:text-gray-200"
+              } hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md`
+            }
+          >
+            Records
+          </NavLink>
+          <NavLink
             to="/settings"
             className={({ isActive }) =>
               `px-4 font-semibold py-2 w-full ${

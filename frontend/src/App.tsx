@@ -9,6 +9,7 @@ import SetGroupDetails from "./pages/SetGroupDetails";
 import Settings from "./pages/Settings";
 import Workout from "./pages/Workout";
 import Workouts from "./pages/Workouts";
+import Records from "./pages/Records";
 
 function Logout() {
   localStorage.clear();
@@ -54,6 +55,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Workouts />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/records"
+              element={
+                <ProtectedRoute>
+                  <Records />
                 </ProtectedRoute>
               }
             />

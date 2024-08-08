@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 from django.http import Http404
 from datetime import datetime
 from django.http import HttpResponse
+from django.db.models import Max
 import csv
 
 User = get_user_model()
@@ -258,3 +259,32 @@ class GetWorkoutBreakdownView(generics.GenericAPIView):
         return Workout.objects.filter(user=self.request.user).prefetch_related(
             'set_groups__sets', 'set_groups__exercise'
         )
+    
+
+class SetRecordListView(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        # Get all unique exercise names
+        exercises = Exercise.objects.values_list('name', flat=True)
+
+        record_weights = {}
+        
+        # Loop through each exercise to get the maximum weights for rep ranges
+        for exercise in exercises:
+            # Get all sets related to the current exercise
+            sets = (
+                Set.objects
+                .filter(set_group__exercise__name=exercise)
+                .values('reps')
+                .annotate(max_weight=Max('weight'))
+                .order_by('reps')
+            )
+
+            # Convert query result to dictionary with reps as keys
+            weights_dict = {weight['reps']: weight['max_weight'] for weight in sets}
+            record_weights[exercise] = weights_dict
+
+        # Return exercises and record_weights in the required format
+        return Response({
+            "exercises": list(exercises),
+            "record_weights": record_weights
+        })

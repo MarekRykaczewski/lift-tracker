@@ -20,3 +20,9 @@ export interface SetGroup {
   exercise_name: string;
   sets: Set[];
 }
+
+export interface Exercise {
+  id: number;
+  name: string;
+  muscle_group: string;
+}

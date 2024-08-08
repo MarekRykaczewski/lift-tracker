@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import ExportWorkoutsView, GetWorkoutBreakdownView, MoveWorkoutView, WorkoutCopyView, WorkoutDestroyView, WorkoutListCreateView, WorkoutDetailView, SetListCreateView, SetGroupListCreateView, SetGroupDestroyView, ExerciseListView, SetRetrieveUpdateDestroyView, UserProfileView
+from .views import ExportWorkoutsView, GetWorkoutBreakdownView, MoveWorkoutView, SetRecordListView, WorkoutCopyView, WorkoutDestroyView, WorkoutListCreateView, WorkoutDetailView, SetListCreateView, SetGroupListCreateView, SetGroupDestroyView, ExerciseListView, SetRetrieveUpdateDestroyView, UserProfileView
 
 urlpatterns = [
+    path('sets/', SetRecordListView.as_view(), name='set-record-list'),
     path('workouts/', WorkoutListCreateView.as_view(), name='workout-list-create'),
     path('workout-breakdown', GetWorkoutBreakdownView.as_view(), name='workout-breakdown'),
     path('workouts/export/', ExportWorkoutsView.as_view(), name='export_workouts'),
