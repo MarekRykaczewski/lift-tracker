@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { SetGroup as SetGroupType } from "../types";
-import SetPreview from "./SetPreview";
+import SetPreviewContainer from "./Containers/SetPreviewContainer";
 import Trash from "./icons/Trash";
 
 interface SetGroupProps {
@@ -36,9 +36,7 @@ const SetGroup: React.FC<SetGroupProps> = ({ setGroup, onDelete }) => {
         </div>
       </h2>
       <div className="ml-[50%] px-3">
-        {sets.map((set) => (
-          <SetPreview set={set} key={set.id} />
-        ))}
+        <SetPreviewContainer sets={sets} />
       </div>
     </Link>
   );

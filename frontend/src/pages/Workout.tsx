@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../api";
-import SetGroup from "../components/SetGroup";
+import SetGroupContainer from "../components/Containers/SetGroupContainer";
 import SetGroupForm from "../components/SetGroupForm";
 import WorkoutActions from "../components/WorkoutActions";
 import { SetGroup as SetGroupType, Workout as WorkoutType } from "../types";
@@ -15,7 +15,6 @@ const Workout: React.FC = () => {
   const { date } = useParams<Params>();
   const [workout, setWorkout] = useState<WorkoutType | null>(null);
   const [loadingWorkout, setLoadingWorkout] = useState<boolean>(true);
-  const [loadingSetGroups, setLoadingSetGroups] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [setGroups, setSetGroups] = useState<SetGroupType[]>([]);
 
@@ -26,7 +25,6 @@ const Workout: React.FC = () => {
           `api/workouts/${date}/`
         );
         setWorkout(workoutResponse.data);
-        setLoadingWorkout(false);
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
           if (error.response && error.response.status === 404) {
@@ -34,26 +32,13 @@ const Workout: React.FC = () => {
           } else {
             setError("Error fetching workout");
           }
-          setLoadingWorkout(false);
         }
-      }
-    };
-
-    const fetchSetGroupsData = async () => {
-      try {
-        const setGroupsResponse = await api.get<SetGroupType[]>(
-          `api/workouts/${date}/set-groups/`
-        );
-        setSetGroups(setGroupsResponse.data);
-        setLoadingSetGroups(false);
-      } catch (error) {
-        setError("Error fetching set groups");
-        setLoadingSetGroups(false);
+      } finally {
+        setLoadingWorkout(false);
       }
     };
 
     fetchWorkoutData();
-    fetchSetGroupsData();
   }, [date]);
 
   const handleCreateWorkout = async () => {
@@ -132,7 +117,7 @@ const Workout: React.FC = () => {
     return `${year}-${month}-${day}`;
   };
 
-  if (loadingWorkout || loadingSetGroups) {
+  if (loadingWorkout) {
     return <p>Loading...</p>;
   }
 
@@ -169,17 +154,15 @@ const Workout: React.FC = () => {
             workoutId={workout.id}
             setGroupCount={setGroups.length}
           />
-          {setGroups.length > 0 ? (
-            setGroups.map((setGroup) => (
-              <SetGroup
-                key={setGroup.id}
-                setGroup={setGroup}
-                onDelete={handleDelete}
-              />
-            ))
-          ) : (
-            <p>No set groups found for this workout.</p>
-          )}
+          <SetGroupContainer
+            setGroups={setGroups}
+            handleDelete={handleDelete}
+            setWorkout={setWorkout}
+            setLoadingWorkout={setLoadingWorkout}
+            setSetGroups={setSetGroups}
+            setError={setError}
+            date={date}
+          />
         </div>
       ) : (
         <div className="p-3 ">

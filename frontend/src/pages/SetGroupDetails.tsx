@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import api from "../api";
-import Set from "../components/Set";
+import SetContainer from "../components/Containers/SetContainer";
 import { Set as SetType } from "../types";
 
 const SetGroupDetails: React.FC = () => {
@@ -15,28 +15,6 @@ const SetGroupDetails: React.FC = () => {
     reps: 0,
   });
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchSets = async () => {
-      try {
-        if (setGroupId) {
-          const response = await api.get<SetType[]>(
-            `/api/workouts/set-groups/${setGroupId}/sets/`
-          );
-          setSets(response.data);
-        }
-      } catch (error) {
-        setError("Error fetching sets");
-      }
-    };
-
-    fetchSets();
-  }, [setGroupId]);
-
-  const handleSetClick = (set: SetType) => {
-    setSelectedSet(set);
-    setFormState({ weight: set.display_weight, reps: set.reps });
-  };
 
   const handleCreateSet = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -171,11 +149,15 @@ const SetGroupDetails: React.FC = () => {
         </form>
         {error && <div className="text-red-500">{error}</div>}
         <div>
-          {sets.map((set) => (
-            <div key={set.id} onClick={() => handleSetClick(set)}>
-              <Set set={set} isSelected={selectedSet?.id === set.id} />
-            </div>
-          ))}
+          <SetContainer
+            sets={sets}
+            setSelectedSet={setSelectedSet}
+            setSets={setSets}
+            setError={setError}
+            setFormState={setFormState}
+            setGroupId={setGroupId}
+            selectedSet={selectedSet}
+          />
         </div>
       </div>
     </div>

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import api from "../api";
-import { SetGroup } from "../types";
+import MonthsContainer from "./Containers/MonthsContainer";
+import { Workout } from "../types";
 
-interface Workout {
-  date: string;
-  set_groups: SetGroup[];
-}
+// interface Workout {
+//   date: string;
+//   set_groups: SetGroup[];
+// }
 
 const YearCalendar = () => {
   const currentYear = new Date().getFullYear();
@@ -77,77 +77,9 @@ const YearCalendar = () => {
           <div>Loading...</div>
         ) : (
           <div className="grid h-[calc(100vh-68px)] overflow-y-scroll p-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full">
-            {months.map((month, index) => (
-              <MonthView
-                key={index}
-                month={month}
-                year={year}
-                monthIndex={index}
-                workouts={workouts}
-              />
-            ))}
+            <MonthsContainer months={months} workouts={workouts} year={year} />
           </div>
         )}
-      </div>
-    </div>
-  );
-};
-
-const MonthView = ({
-  month,
-  year,
-  monthIndex,
-  workouts,
-}: {
-  month: string;
-  year: number;
-  monthIndex: number;
-  workouts: Workout[];
-}) => {
-  const getDaysInMonth = (year: number, month: number) => {
-    return new Date(year, month + 1, 0).getDate();
-  };
-
-  const daysInMonth = getDaysInMonth(year, monthIndex);
-
-  const days = [];
-  for (let i = 1; i <= daysInMonth; i++) {
-    days.push(i);
-  }
-
-  const getWorkoutsForDay = (day: number) => {
-    return workouts.some((workout) => {
-      const workoutDate = new Date(workout.date);
-      return (
-        workoutDate.getFullYear() === year &&
-        workoutDate.getMonth() === monthIndex &&
-        workoutDate.getDate() === day &&
-        workout.set_groups &&
-        workout.set_groups.length > 0
-      );
-    });
-  };
-
-  return (
-    <div className="flex flex-col items-center border-2 dark:border-gray-700 dark:bg-gray-800 rounded-lg p-3 bg-gray-100">
-      <h3 className="mb-3 text-lg">{month}</h3>
-      <div className="grid grid-cols-7 gap-1">
-        {days.map((day) => {
-          const hasWorkout = getWorkoutsForDay(day);
-
-          return (
-            <Link
-              key={day}
-              className="relative dark:bg-gray-700 overflow-hidden w-8 h-8 flex flex-col items-center justify-center bg-white border-2 dark:border-gray-600 rounded-md"
-              to={`/workouts/${year}-${monthIndex + 1}-${day}`}
-            >
-              <span>{day}</span>
-              {hasWorkout && (
-                <span className="w-full h-[2.5px] bottom-0 absolute rounded-full bg-blue-500" />
-              )}
-            </Link>
-          );
-        })}
       </div>
     </div>
   );
