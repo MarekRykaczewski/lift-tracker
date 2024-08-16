@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api";
-import MonthsContainer from "./Containers/MonthsContainer";
 import { Workout } from "../types";
+import MonthsContainer from "./Containers/MonthsContainer";
 
 // interface Workout {
 //   date: string;
@@ -76,7 +76,7 @@ const YearCalendar = () => {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <div className="grid h-[calc(100vh-68px)] overflow-y-scroll p-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full">
+          <div className="grid h-[calc(100vh-68px)] overflow-y-scroll p-2 gap-1 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] grid-rows-[repeat(auto-fit,minmax(250px,1fr))]">
             <MonthsContainer months={months} workouts={workouts} year={year} />
           </div>
         )}

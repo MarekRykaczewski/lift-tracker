@@ -24,7 +24,7 @@ const MonthView = ({
   }
 
   return (
-    <div className="flex flex-col items-center border-2 dark:border-gray-700 dark:bg-gray-800 rounded-lg p-3 bg-gray-100">
+    <div className="flex flex-col justify-center items-center border-2 dark:border-gray-700 dark:bg-gray-800 rounded-lg p-3 bg-gray-100">
       <h3 className="mb-3 text-lg">{month}</h3>
       <div className="grid grid-cols-7 gap-1">
         <DaysContainer
