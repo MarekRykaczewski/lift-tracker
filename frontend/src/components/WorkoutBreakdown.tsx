@@ -236,18 +236,18 @@ const WorkoutBreakdown: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-2 gap-4 w-full">
-        <div className="dark:bg-gray-700 text-center border dark:border-gray-500 p-2">
+        <div className="dark:bg-gray-700 bg-white text-center border dark:border-gray-500 p-2">
           <h2 className="font-bold">TOTAL WORKOUTS</h2>
           <p className="text-blue-500 text-xl">{workoutData.length}</p>
         </div>
-        <div className="dark:bg-gray-700 text-center border dark:border-gray-500 p-2">
+        <div className="dark:bg-gray-700 bg-white text-center border dark:border-gray-500 p-2">
           <h2 className="font-bold">TOTAL SETS</h2>
           <p className="text-blue-500 text-xl">{totalSets}</p>
         </div>
       </div>
 
       <div className="mt-4 w-full">
-        <table className="w-full table-auto dark:bg-gray-700">
+        <table className="w-full table-auto bg-white dark:bg-gray-700">
           <thead>
             <tr>
               <th className="border dark:border-gray-500 px-4 py-2">
