@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import api from "../api";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import { Link } from "react-router-dom";
+import useAuthForm from "../hooks/useAuthForm";
 
 interface AuthFormProps {
   route: string;
@@ -9,40 +7,19 @@ interface AuthFormProps {
 }
 
 function AuthForm({ route, method }: AuthFormProps) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    email,
+    setEmail,
+    loading,
+    error,
+    handleSubmit,
+  } = useAuthForm({ route, method });
 
   const name = method === "login" ? "Login" : "Register";
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setLoading(true);
-    e.preventDefault();
-    setError(null);
-
-    try {
-      const data = { username, password, email };
-      if (method === "register") {
-        data.email = email;
-      }
-
-      const res = await api.post(route, data);
-      if (method === "login") {
-        localStorage.setItem(ACCESS_TOKEN, res.data.access);
-        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        navigate("/");
-      } else {
-        navigate("/login");
-      }
-    } catch (error) {
-      setError("Invalid credentials. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <form
