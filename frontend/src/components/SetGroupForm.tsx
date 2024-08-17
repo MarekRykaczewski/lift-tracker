@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import { SetGroup } from "../types";
+import Button from "./UI/Button";
 
 interface SetGroupFormProps {
   onSuccess: (data: SetGroup) => void;
@@ -87,12 +88,9 @@ const SetGroupForm: React.FC<SetGroupFormProps> = ({
         </select>
       </div>
       {error && <p className="text-red-500">{error}</p>}
-      <button
-        className="bg-blue-500 text-sm text-white rounded-sm py-4"
-        type="submit"
-      >
+      <Button variant={"primary"} type="submit">
         Create Set Group
-      </button>
+      </Button>
     </form>
   );
 };

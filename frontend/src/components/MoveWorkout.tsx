@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import api from "../api";
+import Button from "./UI/Button";
 
 interface MoveWorkoutProps {
   workoutDate: string;
@@ -46,12 +47,13 @@ const MoveWorkout: React.FC<MoveWorkoutProps> = ({
 
   return (
     <div className="flex flex-col items-center">
-      <button
-        className="px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-700"
+      <Button
+        className="bg-yellow-500 hover:bg-yellow-600"
+        variant={"primary"}
         onClick={() => setShowDatePicker(true)}
       >
         Move Workout
-      </button>
+      </Button>
       {showDatePicker && (
         <>
           <DatePicker
@@ -61,18 +63,12 @@ const MoveWorkout: React.FC<MoveWorkoutProps> = ({
             className="mt-2 p-2 border-2 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600"
           />
           <div className="flex mt-2 space-x-2">
-            <button
-              className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-              onClick={handleMoveWorkout}
-            >
+            <Button variant="primary" onClick={handleMoveWorkout}>
               Confirm Move
-            </button>
-            <button
-              className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700"
-              onClick={handleCancel}
-            >
+            </Button>
+            <Button variant="danger" onClick={handleCancel}>
               Cancel
-            </button>
+            </Button>
           </div>
         </>
       )}

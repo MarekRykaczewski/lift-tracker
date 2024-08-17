@@ -3,6 +3,7 @@ import { MONTHS } from "../constants";
 import useYearCalendar from "../hooks/useYearCalendar";
 import MonthsContainer from "./Containers/MonthsContainer";
 import Banner from "./UI/Banner";
+import Button from "./UI/Button";
 
 const YearCalendar: React.FC = () => {
   const { year, workouts, loading, handlePreviousYear, handleNextYear } =
@@ -12,19 +13,13 @@ const YearCalendar: React.FC = () => {
     <div className="w-full flex flex-col">
       <Banner>
         <div className="w-fit ml-auto mr-auto flex items-center">
-          <button
-            onClick={handlePreviousYear}
-            className="px-3 w-32 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-          >
+          <Button onClick={handlePreviousYear} variant={"primary"}>
             Previous
-          </button>
+          </Button>
           <h2 className="mx-5 text-2xl">{year}</h2>
-          <button
-            onClick={handleNextYear}
-            className="px-3 w-32 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-          >
+          <Button onClick={handleNextYear} variant={"primary"}>
             Next
-          </button>
+          </Button>
         </div>
       </Banner>
       <div>

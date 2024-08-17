@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { SetGroup as SetGroupType } from "../types";
 import SetPreviewContainer from "./Containers/SetPreviewContainer";
 import Trash from "./icons/Trash";
+import Button from "./UI/Button";
 
 interface SetGroupProps {
   setGroup: SetGroupType;
@@ -30,9 +31,9 @@ const SetGroup: React.FC<SetGroupProps> = ({ setGroup, onDelete }) => {
       <h2 className="border-b-2 flex justify-between border-sky-500 px-3 py-2">
         {setGroup.exercise_name}
         <div className="flex items-center gap-2">
-          <button onClick={handleDelete}>
+          <Button variant={"danger"} onClick={handleDelete}>
             <Trash />
-          </button>
+          </Button>
         </div>
       </h2>
       <div className="ml-[50%] px-3">

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Banner from "../components/UI/Banner";
+import Button from "../components/UI/Button";
 import VolumeGraph from "../components/VolumeGraph";
 import WorkoutBreakdown from "../components/WorkoutBreakdown";
 
@@ -9,22 +10,20 @@ const Home = () => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-start">
       <Banner>
-        <button
-          className={`mr-2 ${
-            view === "workout" ? "bg-blue-700" : ""
-          } px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700`}
+        <Button
+          variant={"primary"}
+          className={`mr-2 ${view === "workout" ? "bg-blue-700" : ""}`}
           onClick={() => setView("workout")}
         >
           Workout Breakdown
-        </button>
-        <button
-          className={`${
-            view === "volume" ? "bg-blue-700" : ""
-          } px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700`}
+        </Button>
+        <Button
+          variant={"primary"}
+          className={`${view === "volume" ? "bg-blue-700" : ""}`}
           onClick={() => setView("volume")}
         >
           Volume Graph
-        </button>
+        </Button>
       </Banner>
       <div className="w-full h-full p-2">
         {view === "workout" && <WorkoutBreakdown />}

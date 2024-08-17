@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import SetContainer from "../components/Containers/SetContainer";
 import Banner from "../components/UI/Banner";
+import Button from "../components/UI/Button";
 import useSets from "../hooks/useSets";
 
 const SetGroupDetails: React.FC = () => {
@@ -51,32 +52,24 @@ const SetGroupDetails: React.FC = () => {
             }
           />
           <div className="flex justify-center gap-2 mt-2">
-            <button
-              className="rounded text-white font-bold px-4 py-2 bg-blue-500"
-              type="submit"
-            >
+            <Button variant={"primary"} type="submit">
               {selectedSet ? "Update" : "Add"}
-            </button>
+            </Button>
             {!selectedSet && (
-              <button
-                className="rounded text-white font-bold px-4 py-2 bg-gray-500"
-                type="button"
+              <Button
+                variant={"secondary"}
                 onClick={() => {
                   setSelectedSet(null);
                   setFormState({ weight: 0, reps: 0 });
                 }}
               >
                 Clear
-              </button>
+              </Button>
             )}
             {selectedSet && (
-              <button
-                className="rounded text-white font-bold px-4 py-2 bg-red-500"
-                type="button"
-                onClick={handleDeleteSet}
-              >
+              <Button variant={"danger"} onClick={handleDeleteSet}>
                 Delete
-              </button>
+              </Button>
             )}
           </div>
         </form>

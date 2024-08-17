@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import api from "../api";
+import Button from "./UI/Button";
 
 interface CopyWorkoutProps {
   workoutDate: string;
@@ -46,12 +47,9 @@ const CopyWorkout: React.FC<CopyWorkoutProps> = ({
 
   return (
     <div className="flex flex-col items-center">
-      <button
-        className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-700"
-        onClick={() => setShowDatePicker(true)}
-      >
+      <Button variant="success" onClick={() => setShowDatePicker(true)}>
         Copy Workout
-      </button>
+      </Button>
       {showDatePicker && (
         <>
           <DatePicker
@@ -61,18 +59,12 @@ const CopyWorkout: React.FC<CopyWorkoutProps> = ({
             className="mt-2 p-2 border-2 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600"
           />
           <div className="flex mt-2 space-x-2">
-            <button
-              className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-              onClick={handleCopyWorkout}
-            >
+            <Button variant="primary" onClick={handleCopyWorkout}>
               Confirm Copy
-            </button>
-            <button
-              className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700"
-              onClick={handleCancel}
-            >
+            </Button>
+            <Button variant="danger" onClick={handleCancel}>
               Cancel
-            </button>
+            </Button>
           </div>
         </>
       )}

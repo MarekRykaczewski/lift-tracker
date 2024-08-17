@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../api";
+import Button from "./UI/Button";
 
 const ExportWorkouts: React.FC = () => {
   const handleExport = async () => {
@@ -21,12 +22,9 @@ const ExportWorkouts: React.FC = () => {
 
   return (
     <div className="flex items-center justify-center mt-4">
-      <button
-        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-        onClick={handleExport}
-      >
+      <Button variant={"primary"} onClick={handleExport}>
         Export Workouts to CSV
-      </button>
+      </Button>
     </div>
   );
 };

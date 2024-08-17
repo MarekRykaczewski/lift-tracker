@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../api";
 import CopyWorkout from "./CopyWorkout";
 import MoveWorkout from "./MoveWorkout";
+import Button from "./UI/Button";
 
 interface WorkoutActionsProps {
   workoutId: number;
@@ -31,12 +32,9 @@ const WorkoutActions: React.FC<WorkoutActionsProps> = ({
       <CopyWorkout onCopyComplete={onActionComplete} workoutDate={date!} />
       <MoveWorkout workoutDate={date!} onMoveComplete={onActionComplete} />
 
-      <button
-        className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700"
-        onClick={handleDeleteWorkout}
-      >
+      <Button variant={"danger"} onClick={handleDeleteWorkout}>
         Delete Workout
-      </button>
+      </Button>
     </div>
   );
 };

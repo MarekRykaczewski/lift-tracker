@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import api from "../api";
 import { Set as SetType } from "../types";
+import Button from "./UI/Button";
 
 interface SetFormProps {
   date: string;
@@ -129,7 +130,7 @@ const SetForm: React.FC<SetFormProps> = ({ date, workoutId, onSetCreated }) => {
             required
           />
         </div>
-        <button type="submit">Add Set</button>
+        <Button variant={"primary"}>Add Set</Button>
       </form>
       {error && <p>{error}</p>}
     </div>

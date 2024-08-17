@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import SetGroupContainer from "../components/Containers/SetGroupContainer";
 import SetGroupForm from "../components/SetGroupForm";
 import Banner from "../components/UI/Banner";
+import Button from "../components/UI/Button";
 import WorkoutActions from "../components/WorkoutActions";
 import useWorkout from "../hooks/useWorkout";
 
@@ -76,16 +77,12 @@ const Workout: React.FC = () => {
     <div className="w-full">
       <Banner>
         <Link to={`/workouts/${calculateDate(date!, -1)}`}>
-          <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700">
-            Prev
-          </button>
+          <Button variant={"primary"}>Prev</Button>
         </Link>
 
         {formatDate(date!)}
         <Link to={`/workouts/${calculateDate(date!, 1)}`}>
-          <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700">
-            Next
-          </button>
+          <Button variant={"primary"}>Next</Button>
         </Link>
       </Banner>
       {workout ? (
@@ -109,12 +106,9 @@ const Workout: React.FC = () => {
             <p className="uppercase mb-2 text-xs font-bold text-gray-400">
               No workout found for this date.
             </p>
-            <button
-              className="bg-blue-500 px-2 py-2 text-sm rounded-sm placeholder:text-gray-300"
-              onClick={handleCreateWorkout}
-            >
+            <Button variant={"primary"} onClick={handleCreateWorkout}>
               Create Workout
-            </button>
+            </Button>
           </div>
         </div>
       )}
