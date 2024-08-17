@@ -1,4 +1,5 @@
 import React from "react";
+import { MONTHS } from "../constants";
 import useYearCalendar from "../hooks/useYearCalendar";
 import Banner from "./Banner";
 import MonthsContainer from "./Containers/MonthsContainer";
@@ -6,21 +7,6 @@ import MonthsContainer from "./Containers/MonthsContainer";
 const YearCalendar: React.FC = () => {
   const { year, workouts, loading, handlePreviousYear, handleNextYear } =
     useYearCalendar();
-
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
 
   return (
     <div className="w-full flex flex-col">
@@ -46,7 +32,7 @@ const YearCalendar: React.FC = () => {
           <div>Loading...</div>
         ) : (
           <div className="grid h-[calc(100vh-68px)] overflow-y-scroll p-2 gap-1 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] grid-rows-[repeat(auto-fit,minmax(250px,1fr))]">
-            <MonthsContainer months={months} workouts={workouts} year={year} />
+            <MonthsContainer months={MONTHS} workouts={workouts} year={year} />
           </div>
         )}
       </div>
