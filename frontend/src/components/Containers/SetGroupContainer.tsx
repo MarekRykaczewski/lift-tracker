@@ -1,51 +1,31 @@
-import { useEffect, useState } from "react";
-import api from "../../api";
-import { SetGroup as SetGroupType, Workout } from "../../types";
+import React from "react";
+import useSetGroups from "../../hooks/useSetGroups";
+import { SetGroup as SetGroupType } from "../../types";
 import SetGroup from "../SetGroup";
 
 interface SetGroupContainerProps {
-  setGroups: SetGroupType[];
   handleDelete: (id: number) => void;
-  setWorkout: (workout: Workout | null) => void;
-  setLoadingWorkout: (isLoading: boolean) => void;
-  setSetGroups: (setGroups: SetGroupType[]) => void;
-  setError: (error: string) => void;
   date: string | undefined;
 }
 
-const SetGroupContainer = ({
-  setGroups,
+const SetGroupContainer: React.FC<SetGroupContainerProps> = ({
   handleDelete,
-  setSetGroups,
-  setError,
   date,
-}: SetGroupContainerProps) => {
-  const [loadingSetGroups, setLoadingSetGroups] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchSetGroupsData = async () => {
-      try {
-        const setGroupsResponse = await api.get<SetGroupType[]>(
-          `api/workouts/${date}/set-groups/`
-        );
-        setSetGroups(setGroupsResponse.data);
-        setLoadingSetGroups(false);
-      } catch (error) {
-        setError("Error fetching set groups");
-        setLoadingSetGroups(false);
-      }
-    };
-    fetchSetGroupsData();
-  }, [date]);
+}) => {
+  const { setGroups, loadingSetGroups, error } = useSetGroups(date);
 
   if (loadingSetGroups) {
     return <div>Loading...</div>;
   }
 
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <>
       {setGroups.length > 0 ? (
-        setGroups.map((setGroup) => (
+        setGroups.map((setGroup: SetGroupType) => (
           <SetGroup
             key={setGroup.id}
             setGroup={setGroup}

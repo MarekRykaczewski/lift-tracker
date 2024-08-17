@@ -1,89 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
-import api from "../api";
 import SetContainer from "../components/Containers/SetContainer";
-import { Set as SetType } from "../types";
+import useSets from "../hooks/useSets";
 
 const SetGroupDetails: React.FC = () => {
   const location = useLocation();
   const setGroupId: number = location.state?.setGroupId;
 
-  const [sets, setSets] = useState<SetType[]>([]);
-  const [selectedSet, setSelectedSet] = useState<SetType | null>(null);
-  const [formState, setFormState] = useState<{ weight: number; reps: number }>({
-    weight: 0,
-    reps: 0,
-  });
-  const [error, setError] = useState<string | null>(null);
-
-  const handleCreateSet = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!setGroupId) return;
-
-    const order = sets.length + 1;
-
-    const setData = {
-      weight: formState.weight,
-      reps: formState.reps,
-      order: order,
-    };
-
-    try {
-      const response = await api.post<SetType>(
-        `/api/workouts/set-groups/${setGroupId}/sets/`,
-        setData
-      );
-      setSets([...sets, response.data]);
-      setFormState({ weight: 0, reps: 0 });
-      setError(null);
-    } catch (error) {
-      setError("Error creating set");
-    }
-  };
-
-  const handleUpdateSet = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!setGroupId || !selectedSet) return;
-
-    const setData = {
-      order: selectedSet.order,
-      weight: formState.weight,
-      reps: formState.reps,
-    };
-
-    try {
-      const response = await api.put<SetType>(
-        `/api/workouts/set-groups/${setGroupId}/sets/${selectedSet.id}/`,
-        setData
-      );
-      const updatedSets = sets.map((set) =>
-        set.id === selectedSet.id ? response.data : set
-      );
-      setSets(updatedSets);
-      setSelectedSet(null);
-      setFormState({ weight: 0, reps: 0 });
-      setError(null);
-    } catch (error) {
-      setError("Error updating set");
-    }
-  };
-
-  const handleDeleteSet = async () => {
-    if (!setGroupId || !selectedSet) return;
-
-    try {
-      await api.delete(
-        `/api/workouts/set-groups/${setGroupId}/sets/${selectedSet.id}/`
-      );
-      const updatedSets = sets.filter((set) => set.id !== selectedSet.id);
-      setSets(updatedSets);
-      setSelectedSet(null);
-      setFormState({ weight: 0, reps: 0 });
-      setError(null);
-    } catch (error) {
-      setError("Error deleting set");
-    }
-  };
+  const {
+    sets,
+    error,
+    formState,
+    selectedSet,
+    setFormState,
+    setSelectedSet,
+    handleCreateSet,
+    handleUpdateSet,
+    handleDeleteSet,
+  } = useSets({ setGroupId });
 
   return (
     <div className="flex flex-col items-center w-full h-full bg-gray-50 dark:bg-gray-900">
@@ -152,10 +86,7 @@ const SetGroupDetails: React.FC = () => {
           <SetContainer
             sets={sets}
             setSelectedSet={setSelectedSet}
-            setSets={setSets}
-            setError={setError}
             setFormState={setFormState}
-            setGroupId={setGroupId}
             selectedSet={selectedSet}
           />
         </div>

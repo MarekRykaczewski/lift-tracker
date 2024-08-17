@@ -1,11 +1,9 @@
-import { AxiosError } from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useParams } from "react-router-dom";
-import api from "../api";
 import SetGroupContainer from "../components/Containers/SetGroupContainer";
 import SetGroupForm from "../components/SetGroupForm";
 import WorkoutActions from "../components/WorkoutActions";
-import { SetGroup as SetGroupType, Workout as WorkoutType } from "../types";
+import useWorkout from "../hooks/useWorkout";
 
 interface Params {
   [key: string]: string | undefined;
@@ -13,67 +11,15 @@ interface Params {
 
 const Workout: React.FC = () => {
   const { date } = useParams<Params>();
-  const [workout, setWorkout] = useState<WorkoutType | null>(null);
-  const [loadingWorkout, setLoadingWorkout] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [setGroups, setSetGroups] = useState<SetGroupType[]>([]);
-
-  useEffect(() => {
-    const fetchWorkoutData = async () => {
-      try {
-        const workoutResponse = await api.get<WorkoutType>(
-          `api/workouts/${date}/`
-        );
-        setWorkout(workoutResponse.data);
-      } catch (error: unknown) {
-        if (error instanceof AxiosError) {
-          if (error.response && error.response.status === 404) {
-            setWorkout(null);
-          } else {
-            setError("Error fetching workout");
-          }
-        }
-      } finally {
-        setLoadingWorkout(false);
-      }
-    };
-
-    fetchWorkoutData();
-  }, [date]);
-
-  const handleCreateWorkout = async () => {
-    try {
-      const response = await api.post<WorkoutType>("api/workouts/", { date });
-      setWorkout(response.data);
-      setError(null);
-    } catch (error) {
-      setError("Error creating workout");
-    }
-  };
-
-  const handleGroupSetCreated = async () => {
-    try {
-      const setGroupsResponse = await api.get(
-        `api/workouts/${date}/set-groups/`
-      );
-      setSetGroups(setGroupsResponse.data);
-      setError(null);
-    } catch (error) {
-      setError("Error fetching set groups");
-    }
-  };
-
-  const handleDelete = async (setGroupId: number) => {
-    try {
-      await api.delete(`/api/workouts/set-groups/${setGroupId}/`);
-      setSetGroups((prevSetGroups) =>
-        prevSetGroups.filter((setGroup) => setGroup.id !== setGroupId)
-      );
-      setError(null);
-    } catch (error) {
-      setError("Error deleting set group");
-    }
-  };
+  const {
+    workout,
+    loadingWorkout,
+    error,
+    setGroups,
+    handleCreateWorkout,
+    handleGroupSetCreated,
+    handleDelete,
+  } = useWorkout(date!);
 
   const formatDate = (dateString: string) => {
     const months = [
@@ -154,15 +100,7 @@ const Workout: React.FC = () => {
             workoutId={workout.id}
             setGroupCount={setGroups.length}
           />
-          <SetGroupContainer
-            setGroups={setGroups}
-            handleDelete={handleDelete}
-            setWorkout={setWorkout}
-            setLoadingWorkout={setLoadingWorkout}
-            setSetGroups={setSetGroups}
-            setError={setError}
-            date={date}
-          />
+          <SetGroupContainer handleDelete={handleDelete} date={date} />
         </div>
       ) : (
         <div className="p-3 ">
