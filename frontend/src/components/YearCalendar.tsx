@@ -1,29 +1,11 @@
-import { useEffect, useState } from "react";
-import api from "../api";
-import { Workout } from "../types";
+import React from "react";
+import useYearCalendar from "../hooks/useYearCalendar";
 import Banner from "./Banner";
 import MonthsContainer from "./Containers/MonthsContainer";
 
-const YearCalendar = () => {
-  const currentYear = new Date().getFullYear();
-  const [year, setYear] = useState(currentYear);
-  const [workouts, setWorkouts] = useState<Workout[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    setLoading(true);
-    api
-      .get(`/api/workouts/?year=${year}`)
-      .then((response) => {
-        setWorkouts(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching workouts:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [year]);
+const YearCalendar: React.FC = () => {
+  const { year, workouts, loading, handlePreviousYear, handleNextYear } =
+    useYearCalendar();
 
   const months = [
     "January",
@@ -39,14 +21,6 @@ const YearCalendar = () => {
     "November",
     "December",
   ];
-
-  const handlePreviousYear = () => {
-    setYear(year - 1);
-  };
-
-  const handleNextYear = () => {
-    setYear(year + 1);
-  };
 
   return (
     <div className="w-full flex flex-col">
