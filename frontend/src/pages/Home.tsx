@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Banner from "../components/Banner";
+import Banner from "../components/UI/Banner";
 import VolumeGraph from "../components/VolumeGraph";
 import WorkoutBreakdown from "../components/WorkoutBreakdown";
 

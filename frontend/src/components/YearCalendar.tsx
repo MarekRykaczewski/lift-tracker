@@ -1,8 +1,8 @@
 import React from "react";
 import { MONTHS } from "../constants";
 import useYearCalendar from "../hooks/useYearCalendar";
-import Banner from "./Banner";
 import MonthsContainer from "./Containers/MonthsContainer";
+import Banner from "./UI/Banner";
 
 const YearCalendar: React.FC = () => {
   const { year, workouts, loading, handlePreviousYear, handleNextYear } =

@@ -1,6 +1,6 @@
 import React from "react";
-import Banner from "../components/Banner";
 import ExportWorkouts from "../components/ExportWorkouts";
+import Banner from "../components/UI/Banner";
 import UnitPreferenceSelector from "../components/UnitPreferenceSelector";
 
 const Settings: React.FC = () => {

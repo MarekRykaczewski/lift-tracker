@@ -1,5 +1,5 @@
-import Banner from "../components/Banner";
 import RecordsTable from "../components/RecordsTable";
+import Banner from "../components/UI/Banner";
 
 const Records = () => {
   return (

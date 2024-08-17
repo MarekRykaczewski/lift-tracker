@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import Banner from "../components/Banner";
 import SetContainer from "../components/Containers/SetContainer";
+import Banner from "../components/UI/Banner";
 import useSets from "../hooks/useSets";
 
 const SetGroupDetails: React.FC = () => {
