@@ -3,11 +3,6 @@ import api from "../api";
 import { Workout } from "../types";
 import MonthsContainer from "./Containers/MonthsContainer";
 
-// interface Workout {
-//   date: string;
-//   set_groups: SetGroup[];
-// }
-
 const YearCalendar = () => {
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(currentYear);
