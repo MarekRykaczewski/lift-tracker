@@ -63,7 +63,7 @@ const SetGroupForm: React.FC<SetGroupFormProps> = ({
 
   return (
     <form
-      className="flex bg-gray-100 dark:bg-gray-800 dark:border-gray-700 max-w-md w-full flex-col border-2 self-center ml-auto mr-auto rounded-sm p-6 gap-5"
+      className="flex bg-gray-100 dark:bg-gray-800 dark:border-gray-700 w-full flex-col border-2 self-center ml-auto mr-auto rounded-sm p-6 gap-5"
       onSubmit={handleSubmit}
     >
       <div className="flex flex-col gap-1">

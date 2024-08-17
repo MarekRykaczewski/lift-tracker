@@ -74,7 +74,7 @@ const Workout: React.FC = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="flex flex-col items-center w-full">
       <Banner>
         <Link to={`/workouts/${calculateDate(date!, -1)}`}>
           <Button variant={"primary"}>Prev</Button>
@@ -86,7 +86,7 @@ const Workout: React.FC = () => {
         </Link>
       </Banner>
       {workout ? (
-        <div className="flex flex-col items-center gap-5 p-5">
+        <div className="flex flex-col max-w-md items-center gap-5 p-5">
           <WorkoutActions
             workoutId={workout.id}
             onActionComplete={handleGroupSetCreated}
