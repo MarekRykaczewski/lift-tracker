@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
+import Banner from "../components/Banner";
 import SetGroupContainer from "../components/Containers/SetGroupContainer";
 import SetGroupForm from "../components/SetGroupForm";
 import WorkoutActions from "../components/WorkoutActions";
@@ -73,7 +74,7 @@ const Workout: React.FC = () => {
 
   return (
     <div className="w-full">
-      <h1 className="font-bold flex items-center px-2 justify-center gap-3 text-center w-full text-2xl py-3 dark:bg-gray-700 bg-gray-200 text-black dark:text-white border-b-4 border-sky-500 ">
+      <Banner>
         <Link to={`/workouts/${calculateDate(date!, -1)}`}>
           <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700">
             Prev
@@ -86,7 +87,7 @@ const Workout: React.FC = () => {
             Next
           </button>
         </Link>
-      </h1>
+      </Banner>
       {workout ? (
         <div className="flex flex-col items-center gap-5 p-5">
           <WorkoutActions

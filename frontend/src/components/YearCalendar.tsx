@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 import { Workout } from "../types";
+import Banner from "./Banner";
 import MonthsContainer from "./Containers/MonthsContainer";
 
 const YearCalendar = () => {
@@ -49,7 +50,7 @@ const YearCalendar = () => {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="w-full text-2xl py-3 dark:bg-gray-700 bg-gray-200 text-black dark:text-white border-b-4 border-sky-500">
+      <Banner>
         <div className="w-fit ml-auto mr-auto flex items-center">
           <button
             onClick={handlePreviousYear}
@@ -65,8 +66,7 @@ const YearCalendar = () => {
             Next
           </button>
         </div>
-      </div>
-
+      </Banner>
       <div>
         {loading ? (
           <div>Loading...</div>

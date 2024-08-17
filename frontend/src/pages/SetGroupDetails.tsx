@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import Banner from "../components/Banner";
 import SetContainer from "../components/Containers/SetContainer";
 import useSets from "../hooks/useSets";
 
@@ -21,9 +22,7 @@ const SetGroupDetails: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center w-full h-full bg-gray-50 dark:bg-gray-900">
-      <h1 className="w-full font-bold text-2xl text-center py-3 mb-3 dark:bg-gray-700 bg-gray-200 text-black dark:text-white border-b-4 border-sky-500">
-        Track
-      </h1>
+      <Banner>Track</Banner>
       <div className="max-w-[40vw] border-2 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 p-2 w-full flex flex-col">
         <form
           className="flex flex-col mb-2"

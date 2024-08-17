@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Banner from "../components/Banner";
 import VolumeGraph from "../components/VolumeGraph";
 import WorkoutBreakdown from "../components/WorkoutBreakdown";
 
@@ -7,7 +8,7 @@ const Home = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-start">
-      <div className="w-full py-3 flex items-center px-2 justify-center gap-3 text-2xl text-center dark:bg-gray-700 bg-gray-200 text-black dark:text-white border-b-4 border-sky-500">
+      <Banner>
         <button
           className={`mr-2 ${
             view === "workout" ? "bg-blue-700" : ""
@@ -24,10 +25,10 @@ const Home = () => {
         >
           Volume Graph
         </button>
-      </div>
+      </Banner>
       <div className="w-full h-full p-2">
         {view === "workout" && <WorkoutBreakdown />}
-        {view !== "workout" && <VolumeGraph />}
+        {view === "volume" && <VolumeGraph />}
       </div>
     </div>
   );
