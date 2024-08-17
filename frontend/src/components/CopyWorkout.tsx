@@ -39,6 +39,11 @@ const CopyWorkout: React.FC<CopyWorkoutProps> = ({
     }
   };
 
+  const handleCancel = () => {
+    setTargetDate(null);
+    setShowDatePicker(false);
+  };
+
   return (
     <div className="flex flex-col items-center">
       <button
@@ -53,14 +58,22 @@ const CopyWorkout: React.FC<CopyWorkoutProps> = ({
             selected={targetDate}
             onChange={(date: Date | null) => setTargetDate(date)}
             dateFormat="yyyy-MM-dd"
-            className="mt-2 p-2 border rounded"
+            className="mt-2 p-2 border-2 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600"
           />
-          <button
-            className="mt-2 px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
-            onClick={handleCopyWorkout}
-          >
-            Confirm Copy
-          </button>
+          <div className="flex mt-2 space-x-2">
+            <button
+              className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-700"
+              onClick={handleCopyWorkout}
+            >
+              Confirm Copy
+            </button>
+            <button
+              className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-700"
+              onClick={handleCancel}
+            >
+              Cancel
+            </button>
+          </div>
         </>
       )}
     </div>
