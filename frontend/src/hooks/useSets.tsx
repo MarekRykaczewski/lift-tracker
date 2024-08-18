@@ -103,6 +103,7 @@ const useSets = ({ setGroupId }: UseSetsProps) => {
 
   return {
     sets,
+    setSets,
     error,
     formState,
     selectedSet,
