@@ -1,10 +1,10 @@
 import React from "react";
-import useAuthForm from "../hooks/useAuthForm";
-import AuthLink from "./AuthLink";
-import ErrorNotification from "./UI/ErrorNotification";
-import FormHeader from "./UI/FormHeader";
-import InputField from "./UI/InputField";
-import SubmitButton from "./UI/SubmitButton";
+import useAuthForm from "../../hooks/useAuthForm";
+import AuthLink from "../AuthLink";
+import ErrorNotification from "../UI/ErrorNotification";
+import FormHeader from "../UI/FormHeader";
+import InputField from "../UI/InputField";
+import SubmitButton from "../UI/SubmitButton";
 
 interface AuthFormProps {
   route: string;

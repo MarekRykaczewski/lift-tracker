@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import SetGroupContainer from "../components/Containers/SetGroupContainer";
-import SetGroupForm from "../components/SetGroupForm";
+import SetGroupForm from "../components/Forms/SetGroupForm";
 import Banner from "../components/UI/Banner";
 import Button from "../components/UI/Button";
 import WorkoutActions from "../components/WorkoutActions";

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import api from "../api";
-import { SetGroup } from "../types";
-import Button from "./UI/Button";
+import api from "../../api";
+import { SetGroup } from "../../types";
+import Button from "../UI/Button";
 
 interface SetGroupFormProps {
   onSuccess: (data: SetGroup) => void;
