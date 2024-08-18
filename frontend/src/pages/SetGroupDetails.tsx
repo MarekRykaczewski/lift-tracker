@@ -11,6 +11,7 @@ const SetGroupDetails: React.FC = () => {
 
   const {
     sets,
+    setSets,
     error,
     formState,
     selectedSet,
@@ -38,6 +39,7 @@ const SetGroupDetails: React.FC = () => {
         <div>
           <SetContainer
             sets={sets}
+            setSets={setSets}
             setSelectedSet={setSelectedSet}
             setFormState={setFormState}
             selectedSet={selectedSet}
