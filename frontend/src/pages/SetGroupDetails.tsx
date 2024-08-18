@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import SetContainer from "../components/Containers/SetContainer";
 import Banner from "../components/UI/Banner";
 import Button from "../components/UI/Button";
+import InputField from "../components/UI/InputField";
 import useSets from "../hooks/useSets";
 
 const SetGroupDetails: React.FC = () => {
@@ -24,32 +25,30 @@ const SetGroupDetails: React.FC = () => {
   return (
     <div className="flex flex-col items-center w-full h-full bg-gray-50 dark:bg-gray-900">
       <Banner>Track</Banner>
-      <div className="max-w-[40vw] border-2 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 p-2 w-full flex flex-col">
+      <div className="max-w-[40vw] mt-2 border-2 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 p-2 w-full flex flex-col">
         <form
-          className="flex flex-col mb-2"
+          className="flex gap-2 flex-col mb-2"
           onSubmit={selectedSet ? handleUpdateSet : handleCreateSet}
         >
-          <label className="border-b-2 mb-1 font-semibold border-sky-500">
-            WEIGHT
-          </label>
-          <input
-            className="border-b self-center font-bold text-xl border-gray-400 text-center w-1/3 bg-transparent"
-            type="number"
+          <InputField
+            id={"weight"}
+            label={"WEIGHT"}
+            type={"number"}
             value={formState.weight}
             onChange={(e) =>
               setFormState({ ...formState, weight: parseInt(e.target.value) })
             }
+            placeholder={""}
           />
-          <label className="border-b-2 mb-1 font-semibold border-sky-500">
-            REPS
-          </label>
-          <input
-            className="border-b self-center font-bold text-xl border-gray-400 text-center w-1/3 bg-transparent"
-            type="number"
+          <InputField
+            id={"reps"}
+            label={"REPS"}
+            type={"number"}
             value={formState.reps}
             onChange={(e) =>
               setFormState({ ...formState, reps: parseInt(e.target.value) })
             }
+            placeholder={""}
           />
           <div className="flex justify-center gap-2 mt-2">
             <Button variant={"primary"} type="submit">
