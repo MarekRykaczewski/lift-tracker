@@ -9,6 +9,7 @@ from django.http import Http404
 from datetime import datetime
 from django.http import HttpResponse
 from django.db.models import Max
+from django.db import transaction, IntegrityError
 import csv
 
 User = get_user_model()
@@ -147,6 +148,31 @@ class SetRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         context = super().get_serializer_context()
         context['request'] = self.request
         return context
+    
+class UpdateSetOrderView(generics.UpdateAPIView):
+    def put(self, request, *args, **kwargs):
+        set_group_id = kwargs['set_group_id']
+        sets_data = request.data.get('sets', [])
+
+        try:
+            with transaction.atomic():
+                # Shift all orders by a large number to avoid conflicts
+                for set_data in sets_data:
+                    set_id = set_data['id']
+                    temp_order = set_data['order'] + 1000
+                    Set.objects.filter(id=set_id, set_group_id=set_group_id).update(order=temp_order)
+
+                # Now set the correct order
+                for set_data in sets_data:
+                    set_id = set_data['id']
+                    final_order = set_data['order']
+                    Set.objects.filter(id=set_id, set_group_id=set_group_id).update(order=final_order)
+
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
+        except IntegrityError as e:
+            return Response({"error": "Database error: " + str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 class SetGroupDestroyView(generics.DestroyAPIView):
     queryset = SetGroup.objects.all()

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ExportWorkoutsView, GetWorkoutBreakdownView, MoveWorkoutView, SetRecordListView, WorkoutCopyView, WorkoutDestroyView, WorkoutListCreateView, WorkoutDetailView, SetListCreateView, SetGroupListCreateView, SetGroupDestroyView, ExerciseListView, SetRetrieveUpdateDestroyView, UserProfileView
+from .views import ExportWorkoutsView, GetWorkoutBreakdownView, MoveWorkoutView, SetRecordListView, UpdateSetOrderView, WorkoutCopyView, WorkoutDestroyView, WorkoutListCreateView, WorkoutDetailView, SetListCreateView, SetGroupListCreateView, SetGroupDestroyView, ExerciseListView, SetRetrieveUpdateDestroyView, UserProfileView
 
 urlpatterns = [
     path('sets/', SetRecordListView.as_view(), name='set-record-list'),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('workouts/<str:date>/move/', MoveWorkoutView.as_view(), name='move_workout'),
     path('workouts/<str:date>/set-groups/', SetGroupListCreateView.as_view(), name='setgroup-list-create'),
     path('workouts/set-groups/<int:set_group_id>/sets/', SetListCreateView.as_view(), name='set-list-create'),
+    path('workouts/set-groups/<int:set_group_id>/sets/update-order/', UpdateSetOrderView.as_view(), name='update-set-order'),
     path('workouts/set-groups/<int:set_group_id>/sets/<int:pk>/', SetRetrieveUpdateDestroyView.as_view(), name='set-retrieve-update-destroy'),
     path('workouts/set-groups/<int:pk>/', SetGroupDestroyView.as_view(), name='setgroup-destroy'),
     path('user/profile/', UserProfileView.as_view(), name='user-profile'),
