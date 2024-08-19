@@ -43,6 +43,7 @@ const SetGroupDetails: React.FC = () => {
             setSelectedSet={setSelectedSet}
             setFormState={setFormState}
             selectedSet={selectedSet}
+            setGroupId={setGroupId}
           />
         </div>
       </div>

@@ -4,6 +4,7 @@ import {
   Droppable,
   DropResult,
 } from "@hello-pangea/dnd";
+import api from "../../api";
 import { Set as SetType } from "../../types";
 import Set from "../Set";
 
@@ -13,6 +14,7 @@ interface SetContainerProps {
   setFormState: (state: { weight: number; reps: number }) => void;
   selectedSet: SetType | null;
   setSets: (sets: SetType[]) => void;
+  setGroupId: number;
 }
 
 const SetContainer = ({
@@ -21,10 +23,27 @@ const SetContainer = ({
   setFormState,
   selectedSet,
   setSets,
+  setGroupId,
 }: SetContainerProps) => {
   const handleSetClick = (set: SetType) => {
     setSelectedSet(set);
     setFormState({ weight: set.display_weight, reps: set.reps });
+  };
+
+  const updateSetOrderInBackend = async (sets: SetType[]) => {
+    try {
+      await api.put(
+        `/api/workouts/set-groups/${setGroupId}/sets/update-order/`,
+        {
+          sets: sets.map((set) => ({
+            id: set.id,
+            order: set.order,
+          })),
+        }
+      );
+    } catch (error) {
+      console.error("Error updating set order:", error);
+    }
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -40,6 +59,8 @@ const SetContainer = ({
     }));
 
     setSets(updatedSets);
+
+    updateSetOrderInBackend(updatedSets);
   };
 
   return (
