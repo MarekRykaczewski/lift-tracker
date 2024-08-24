@@ -17,7 +17,6 @@ const Workout: React.FC = () => {
     workout,
     loadingWorkout,
     error,
-    setGroups,
     handleCreateWorkout,
     handleGroupSetCreated,
     handleDelete,
@@ -96,7 +95,7 @@ const Workout: React.FC = () => {
             onSuccess={handleGroupSetCreated}
             date={date!}
             workoutId={workout.id}
-            setGroupCount={setGroups.length}
+            setGroupCount={workout.set_groups.length}
           />
           <SetGroupContainer handleDelete={handleDelete} date={date} />
         </div>
