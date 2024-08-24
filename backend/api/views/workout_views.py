@@ -105,12 +105,13 @@ class MoveWorkoutView(generics.GenericAPIView):
     serializer_class = MoveWorkoutSerializer
 
     def put(self, request, *args, **kwargs):
+        user = self.request.user
         workout_date = self.kwargs.get('date') 
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             target_date = serializer.validated_data['target_date']
             try:
-                workout = Workout.objects.get(date=workout_date)
+                workout = Workout.objects.get(date=workout_date, user=user)
                 workout.date = target_date
                 workout.save()
                 return Response({'message': 'Workout moved successfully'}, status=status.HTTP_200_OK)
