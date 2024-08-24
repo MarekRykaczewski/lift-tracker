@@ -19,8 +19,13 @@ const SetGroupContainer: React.FC<SetGroupContainerProps> = ({
   handleDelete,
   date,
 }) => {
-  const { setGroups, loadingSetGroups, error, setSetGroups } =
-    useSetGroups(date);
+  const {
+    setGroups,
+    loadingSetGroups,
+    error,
+    setSetGroups,
+    updateSetOrderInBackend,
+  } = useSetGroups(date);
 
   if (loadingSetGroups) {
     return <div>Loading...</div>;
@@ -33,11 +38,12 @@ const SetGroupContainer: React.FC<SetGroupContainerProps> = ({
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
-    const items = Array.from(setGroups);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+    const reorderedSetGroups = Array.from(setGroups);
+    const [movedSetGroup] = reorderedSetGroups.splice(result.source.index, 1);
+    reorderedSetGroups.splice(result.destination.index, 0, movedSetGroup);
 
-    setSetGroups(items);
+    setSetGroups(reorderedSetGroups);
+    updateSetOrderInBackend(reorderedSetGroups);
   };
 
   return (

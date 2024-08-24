@@ -27,12 +27,27 @@ const useSetGroups = (date: string | undefined) => {
     }
   }, [date]);
 
+  const updateSetOrderInBackend = async (updatedSetGroups: SetGroupType[]) => {
+    try {
+      await api.put(`api/workouts/${date}/set-groups/update-order/`, {
+        setGroups: updatedSetGroups.map((setGroup, index) => ({
+          id: setGroup.id,
+          order: index + 1,
+        })),
+      });
+    } catch (err) {
+      setError("Error updating set group order");
+      throw err;
+    }
+  };
+
   return {
     setGroups,
     loadingSetGroups,
     error,
     setSetGroups,
     setError,
+    updateSetOrderInBackend,
   };
 };
 

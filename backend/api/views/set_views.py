@@ -105,6 +105,33 @@ class UpdateSetOrderView(generics.UpdateAPIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+class UpdateSetGroupOrderView(generics.UpdateAPIView):
+    def put(self, request, *args, **kwargs):
+        workout_date = self.kwargs.get('date')
+        set_groups_data = request.data.get('set_groups', [])
+
+        try:
+            workout = Workout.objects.get(date=workout_date, user=self.request.user)
+
+            with transaction.atomic():
+                for set_group_data in set_groups_data:
+                    set_group_id = set_group_data['id']
+                    temp_order = set_group_data['order'] + 1000
+                    SetGroup.objects.filter(id=set_group_id, workout=workout).update(order=temp_order)
+
+                for set_group_data in set_groups_data:
+                    set_group_id = set_group_data['id']
+                    final_order = set_group_data['order']
+                    SetGroup.objects.filter(id=set_group_id, workout=workout).update(order=final_order)
+
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
+        except Workout.DoesNotExist:
+            return Response({"error": "Workout not found"}, status=status.HTTP_404_NOT_FOUND)
+        except IntegrityError as e:
+            return Response({"error": "Database error: " + str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 class SetGroupDestroyView(generics.DestroyAPIView):
     queryset = SetGroup.objects.all()
     serializer_class = SetGroupSerializer

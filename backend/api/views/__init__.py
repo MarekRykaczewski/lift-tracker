@@ -1,6 +1,6 @@
 from .user_views import CreateUserView, UserProfileView
 from .workout_views import WorkoutListCreateView, WorkoutDetailView, WorkoutDestroyView, WorkoutCopyView, MoveWorkoutView
-from .set_views import SetGroupListCreateView, SetListCreateView, SetRetrieveUpdateDestroyView, UpdateSetOrderView, SetGroupDestroyView
+from .set_views import SetGroupListCreateView, UpdateSetGroupOrderView, SetListCreateView, SetRetrieveUpdateDestroyView, UpdateSetOrderView, SetGroupDestroyView
 from .exercise_views import ExerciseListView
 from .analytics_views import SetRecordListView, GetWorkoutBreakdownView, ExportWorkoutsView
 
@@ -21,4 +21,5 @@ __all__ = [
     'SetRecordListView',
     'GetWorkoutBreakdownView',
     'ExportWorkoutsView',
+    'UpdateSetGroupOrderView'
 ]
