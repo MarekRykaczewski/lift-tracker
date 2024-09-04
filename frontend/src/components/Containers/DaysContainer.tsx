@@ -27,16 +27,21 @@ const DaysContainer = ({
     });
   };
 
+  // Helper function to pad numbers with leading zeros
+  const padNumber = (num: number) => num.toString().padStart(2, "0");
+
   return (
     <>
       {days.map((day) => {
         const hasWorkout = getWorkoutsForDay(day);
+        const month = padNumber(monthIndex + 1); // Convert zero-based month to one-based and pad
+        const formattedDay = padNumber(day); // Pad day with leading zero if needed
 
         return (
           <Link
             key={day}
             className="relative dark:bg-gray-700 overflow-hidden w-8 h-8 flex flex-col items-center justify-center bg-white border-2 dark:border-gray-600 rounded-md"
-            to={`/workouts/${year}-${monthIndex + 1}-${day}`}
+            to={`/workouts/${year}-${month}-${formattedDay}`} // Use padded values
           >
             <span>{day}</span>
             {hasWorkout && (
