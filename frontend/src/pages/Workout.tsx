@@ -30,13 +30,11 @@ const Workout: React.FC = () => {
   } = useSetGroups(workoutDate!);
 
   const handleActionComplete = () => {
-    console.log("Handling action completion...");
     fetchWorkout();
     fetchSetGroups();
   };
 
   useEffect(() => {
-    console.log("Fetching workout and set groups for date:", workoutDate);
     if (workoutDate) {
       fetchWorkout();
       fetchSetGroups();
