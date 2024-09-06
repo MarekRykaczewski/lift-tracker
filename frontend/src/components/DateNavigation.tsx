@@ -1,12 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/UI/Button";
 
 interface DateNavigationProps {
   currentDate: string;
+  onActionComplete: () => void;
 }
 
-const DateNavigation: React.FC<DateNavigationProps> = ({ currentDate }) => {
+const DateNavigation: React.FC<DateNavigationProps> = ({
+  currentDate,
+  onActionComplete,
+}) => {
+  const navigate = useNavigate();
+
   const formatDate = (dateString: string) => {
     const months = [
       "January",
@@ -49,15 +55,22 @@ const DateNavigation: React.FC<DateNavigationProps> = ({ currentDate }) => {
     return `${year}-${month}-${day}`;
   };
 
+  const handleNavigation = (offset: number) => {
+    onActionComplete();
+    const newDate = calculateDate(currentDate, offset);
+    navigate(`/workouts/${newDate}`, { replace: true });
+    window.location.reload();
+  };
+
   return (
     <div className="flex justify-between w-full">
-      <Link to={`/workouts/${calculateDate(currentDate, -1)}`}>
-        <Button variant={"primary"}>Prev</Button>
-      </Link>
+      <Button variant={"primary"} onClick={() => handleNavigation(-1)}>
+        Prev
+      </Button>
       <span>{formatDate(currentDate)}</span>
-      <Link to={`/workouts/${calculateDate(currentDate, 1)}`}>
-        <Button variant={"primary"}>Next</Button>
-      </Link>
+      <Button variant={"primary"} onClick={() => handleNavigation(1)}>
+        Next
+      </Button>
     </div>
   );
 };
