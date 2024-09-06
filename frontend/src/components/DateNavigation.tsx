@@ -4,13 +4,9 @@ import Button from "../components/UI/Button";
 
 interface DateNavigationProps {
   currentDate: string;
-  onActionComplete: () => void;
 }
 
-const DateNavigation: React.FC<DateNavigationProps> = ({
-  currentDate,
-  onActionComplete,
-}) => {
+const DateNavigation: React.FC<DateNavigationProps> = ({ currentDate }) => {
   const navigate = useNavigate();
 
   const formatDate = (dateString: string) => {
@@ -56,7 +52,6 @@ const DateNavigation: React.FC<DateNavigationProps> = ({
   };
 
   const handleNavigation = (offset: number) => {
-    onActionComplete();
     const newDate = calculateDate(currentDate, offset);
     navigate(`/workouts/${newDate}`, { replace: true });
     window.location.reload();

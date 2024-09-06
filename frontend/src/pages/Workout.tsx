@@ -49,10 +49,7 @@ const Workout: React.FC = () => {
   return (
     <div className="flex flex-col items-center w-full">
       <Banner>
-        <DateNavigation
-          currentDate={workoutDate!}
-          onActionComplete={handleActionComplete}
-        />
+        <DateNavigation currentDate={workoutDate!} />
       </Banner>
       {workout ? (
         <div className="flex flex-col max-w-md items-center gap-5 p-5">
