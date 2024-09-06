@@ -6,33 +6,33 @@ import {
   Droppable,
   DropResult,
 } from "@hello-pangea/dnd";
-import useSetGroups from "../../hooks/useSetGroups";
+import { AxiosError } from "axios";
 import { SetGroup as SetGroupType } from "../../types";
 import SetGroup from "../SetGroup";
 
 interface SetGroupContainerProps {
   handleDelete: (id: number) => void;
-  date: string | undefined;
+  setGroups: SetGroupType[];
+  setSetGroups: React.Dispatch<React.SetStateAction<SetGroupType[]>>;
+  loadingSetGroups: boolean;
+  error: AxiosError | null;
+  updateSetOrderInBackend: (setGroups: SetGroupType[]) => void;
 }
 
 const SetGroupContainer: React.FC<SetGroupContainerProps> = ({
   handleDelete,
-  date,
+  setSetGroups,
+  setGroups,
+  loadingSetGroups,
+  error,
+  updateSetOrderInBackend,
 }) => {
-  const {
-    setGroups,
-    loadingSetGroups,
-    error,
-    setSetGroups,
-    updateSetOrderInBackend,
-  } = useSetGroups(date);
-
   if (loadingSetGroups) {
     return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div>{error.message}</div>;
   }
 
   const handleDragEnd = (result: DropResult) => {

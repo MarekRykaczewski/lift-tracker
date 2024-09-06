@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import api from "../api";
 import { SetGroup as SetGroupType } from "../types";
 
@@ -7,25 +7,41 @@ const useSetGroups = (date: string | undefined) => {
   const [loadingSetGroups, setLoadingSetGroups] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchSetGroupsData = async () => {
-      try {
-        const setGroupsResponse = await api.get<SetGroupType[]>(
-          `api/workouts/${date}/set-groups/`
-        );
-        setSetGroups(setGroupsResponse.data);
-        setError(null);
-      } catch (error) {
-        setError("Error fetching set groups");
-      } finally {
-        setLoadingSetGroups(false);
-      }
-    };
-
-    if (date) {
-      fetchSetGroupsData();
+  const fetchSetGroups = async () => {
+    setLoadingSetGroups(true);
+    try {
+      const response = await api.get(`/api/workouts/${date}/set-groups`);
+      setSetGroups(response.data);
+    } catch (error) {
+      setError("Error fetching workout");
+    } finally {
+      setLoadingSetGroups(false);
     }
-  }, [date]);
+  };
+
+  const createSetGroup = async () => {
+    try {
+      const setGroupsResponse = await api.get(
+        `api/workouts/${date}/set-groups/`
+      );
+      setSetGroups(setGroupsResponse.data);
+      setError(null);
+    } catch (error) {
+      setError("Error fetching set groups");
+    }
+  };
+
+  const deleteSetGroup = async (setGroupId: number) => {
+    try {
+      await api.delete(`/api/workouts/set-groups/${setGroupId}/`);
+      setSetGroups((prevSetGroups) =>
+        prevSetGroups.filter((setGroup) => setGroup.id !== setGroupId)
+      );
+      setError(null);
+    } catch (error) {
+      setError("Error deleting set group");
+    }
+  };
 
   const updateSetOrderInBackend = async (updatedSetGroups: SetGroupType[]) => {
     try {
@@ -46,6 +62,9 @@ const useSetGroups = (date: string | undefined) => {
     loadingSetGroups,
     error,
     setSetGroups,
+    createSetGroup,
+    fetchSetGroups,
+    deleteSetGroup,
     setError,
     updateSetOrderInBackend,
   };
