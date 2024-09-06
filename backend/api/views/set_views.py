@@ -108,7 +108,7 @@ class UpdateSetOrderView(generics.UpdateAPIView):
 class UpdateSetGroupOrderView(generics.UpdateAPIView):
     def put(self, request, *args, **kwargs):
         workout_date = self.kwargs.get('date')
-        set_groups_data = request.data.get('set_groups', [])
+        set_groups_data = request.data.get('setGroups', [])
 
         try:
             workout = Workout.objects.get(date=workout_date, user=self.request.user)
