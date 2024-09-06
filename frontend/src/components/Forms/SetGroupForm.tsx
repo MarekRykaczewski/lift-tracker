@@ -37,8 +37,7 @@ const SetGroupForm: React.FC<SetGroupFormProps> = ({
     fetchExercises();
   }, []);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     if (!selectedExercise) {
       setError("Please select an exercise");
       return;
