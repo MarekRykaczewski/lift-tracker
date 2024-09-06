@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import LoadingSpinner from "./UI/LoadingSpinner";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
@@ -49,7 +50,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   };
 
   if (isAuthorized === null) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return isAuthorized ? children : <Navigate to="/login" />;

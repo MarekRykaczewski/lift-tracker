@@ -5,6 +5,7 @@ import DateNavigation from "../components/DateNavigation";
 import SetGroupForm from "../components/Forms/SetGroupForm";
 import Banner from "../components/UI/Banner";
 import Button from "../components/UI/Button";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 import WorkoutActions from "../components/WorkoutActions";
 import useSetGroups from "../hooks/useSetGroups";
 import useWorkout from "../hooks/useWorkout";
@@ -42,7 +43,7 @@ const Workout: React.FC = () => {
     }
   }, [workoutDate]);
 
-  if (loadingWorkout) return <p>Loading...</p>;
+  if (loadingWorkout) return <LoadingSpinner />;
 
   const isNotFoundError = error && error.response?.status === 404;
 

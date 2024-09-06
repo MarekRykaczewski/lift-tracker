@@ -9,6 +9,7 @@ import {
 import { AxiosError } from "axios";
 import { SetGroup as SetGroupType } from "../../types";
 import SetGroup from "../SetGroup";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 interface SetGroupContainerProps {
   handleDelete: (id: number) => void;
@@ -28,7 +29,7 @@ const SetGroupContainer: React.FC<SetGroupContainerProps> = ({
   updateSetOrderInBackend,
 }) => {
   if (loadingSetGroups) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (error) {

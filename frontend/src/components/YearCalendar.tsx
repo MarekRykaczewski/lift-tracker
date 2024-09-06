@@ -4,6 +4,7 @@ import useYearCalendar from "../hooks/useYearCalendar";
 import MonthsContainer from "./Containers/MonthsContainer";
 import Banner from "./UI/Banner";
 import Button from "./UI/Button";
+import LoadingSpinner from "./UI/LoadingSpinner";
 
 const YearCalendar: React.FC = () => {
   const { year, workouts, loading, handlePreviousYear, handleNextYear } =
@@ -24,7 +25,7 @@ const YearCalendar: React.FC = () => {
       </Banner>
       <div>
         {loading ? (
-          <div>Loading...</div>
+          <LoadingSpinner />
         ) : (
           <div className="grid h-[calc(100vh-68px)] overflow-y-scroll p-2 gap-1 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] grid-rows-[repeat(auto-fit,minmax(250px,1fr))]">
             <MonthsContainer months={MONTHS} workouts={workouts} year={year} />
