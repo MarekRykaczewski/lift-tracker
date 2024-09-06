@@ -1,6 +1,8 @@
 export const ACCESS_TOKEN = "access";
 export const REFRESH_TOKEN = "refresh";
 
+export const KG_TO_LBS = 2.20462;
+
 export const MONTHS = [
   "January",
   "February",

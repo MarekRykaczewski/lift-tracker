@@ -1,5 +1,6 @@
 import { usePreferences } from "../context/PreferencesContext";
 import { Set as SetType } from "../types";
+import { convertWeight } from "../utils/ConvertWeight";
 
 interface SetProps {
   set: SetType;
@@ -8,6 +9,11 @@ interface SetProps {
 
 const Set: React.FC<SetProps> = ({ set, isSelected }) => {
   const { preferredUnit } = usePreferences();
+
+  const displayWeight = convertWeight(
+    set.weight,
+    preferredUnit || "kg"
+  ).toFixed(0);
 
   return (
     <div
@@ -19,7 +25,7 @@ const Set: React.FC<SetProps> = ({ set, isSelected }) => {
         <span className="font-bold">{set.order}</span>
       </div>
       <div className="flex-1 text-center">
-        <span className="font-bold mr-1">{set.display_weight}</span>
+        <span className="font-bold mr-1">{displayWeight}</span>
         <span className="text-gray-700 dark:text-gray-300">
           {preferredUnit}
         </span>
