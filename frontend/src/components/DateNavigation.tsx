@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/UI/Button";
+import { DAYSOFWEEK, MONTHS } from "../constants";
 
 interface DateNavigationProps {
   currentDate: string;
@@ -10,33 +11,9 @@ const DateNavigation: React.FC<DateNavigationProps> = ({ currentDate }) => {
   const navigate = useNavigate();
 
   const formatDate = (dateString: string) => {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const daysOfWeek = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-
     const date = new Date(dateString);
-    const dayOfWeek = daysOfWeek[date.getDay()];
-    const month = months[date.getMonth()];
+    const dayOfWeek = DAYSOFWEEK[date.getDay()];
+    const month = MONTHS[date.getMonth()];
     const dayOfMonth = date.getDate();
 
     return `${dayOfWeek}, ${month} ${dayOfMonth}`;
