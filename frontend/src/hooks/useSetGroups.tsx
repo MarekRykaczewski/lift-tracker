@@ -33,7 +33,7 @@ const useSetGroups = (date: string | undefined) => {
 
   const deleteSetGroup = async (setGroupId: number) => {
     try {
-      await api.delete(`/api/workouts/set-groups/${setGroupId}/`);
+      await api.delete(`/api/workouts/${date}/set-groups/${setGroupId}/`);
       setSetGroups((prevSetGroups) =>
         prevSetGroups.filter((setGroup) => setGroup.id !== setGroupId)
       );

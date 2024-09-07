@@ -21,7 +21,7 @@ urlpatterns = [
     # Set group-related routes (nested under workouts)
     path('workouts/<str:date>/set-groups/', SetGroupListCreateView.as_view(), name='set-group-list-create'),  # GET (list), POST (create set group)
     path('workouts/<str:date>/set-groups/order/', UpdateSetGroupOrderView.as_view(), name='set-group-order-update'),  # PATCH (update set group order)
-    path('workouts/set-groups/<int:pk>/', SetGroupDestroyView.as_view(), name='set-group-destroy'),  # DELETE (destroy set group)
+    path('workouts/<str:date>/set-groups/<int:pk>/', SetGroupDestroyView.as_view(), name='set-group-destroy'),  # DELETE (destroy set group)
 
     # Set-related routes (nested under set groups)
     path('set-groups/<int:set_group_id>/sets/', SetListCreateView.as_view(), name='set-list-create'),  # GET (list sets), POST (create set)
