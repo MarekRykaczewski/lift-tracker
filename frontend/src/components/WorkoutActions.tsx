@@ -19,7 +19,7 @@ const WorkoutActions: React.FC<WorkoutActionsProps> = ({
 
   const handleDeleteWorkout = async () => {
     try {
-      await api.delete(`/api/workouts/${workoutId}/`);
+      await api.delete(`/api/workouts/${workoutId}/destroy`);
       navigate(`/workouts/${date}`);
       onActionComplete();
     } catch (error) {

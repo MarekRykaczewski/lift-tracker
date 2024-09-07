@@ -32,15 +32,12 @@ const SetContainer = ({
 
   const updateSetOrderInBackend = async (sets: SetType[]) => {
     try {
-      await api.put(
-        `/api/workouts/set-groups/${setGroupId}/sets/update-order/`,
-        {
-          sets: sets.map((set) => ({
-            id: set.id,
-            order: set.order,
-          })),
-        }
-      );
+      await api.put(`/api/set-groups/${setGroupId}/sets/order/`, {
+        sets: sets.map((set) => ({
+          id: set.id,
+          order: set.order,
+        })),
+      });
     } catch (error) {
       console.error("Error updating set order:", error);
     }

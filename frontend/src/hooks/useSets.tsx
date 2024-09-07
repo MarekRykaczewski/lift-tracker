@@ -21,7 +21,7 @@ const useSets = ({ setGroupId }: UseSetsProps) => {
 
       try {
         const response = await api.get<SetType[]>(
-          `/api/workouts/set-groups/${setGroupId}/sets/`
+          `/api/set-groups/${setGroupId}/sets/`
         );
         setSets(response.data);
         setError(null);
@@ -46,7 +46,7 @@ const useSets = ({ setGroupId }: UseSetsProps) => {
 
     try {
       const response = await api.post<SetType>(
-        `/api/workouts/set-groups/${setGroupId}/sets/`,
+        `/api/set-groups/${setGroupId}/sets/`,
         setData
       );
       setSets([...sets, response.data]);
@@ -69,7 +69,7 @@ const useSets = ({ setGroupId }: UseSetsProps) => {
 
     try {
       const response = await api.put<SetType>(
-        `/api/workouts/set-groups/${setGroupId}/sets/${selectedSet.id}/`,
+        `/api/set-groups/${setGroupId}/sets/${selectedSet.id}/`,
         setData
       );
       const updatedSets = sets.map((set) =>
@@ -88,9 +88,7 @@ const useSets = ({ setGroupId }: UseSetsProps) => {
     if (!setGroupId || !selectedSet) return;
 
     try {
-      await api.delete(
-        `/api/workouts/set-groups/${setGroupId}/sets/${selectedSet.id}/`
-      );
+      await api.delete(`/api/set-groups/${setGroupId}/sets/${selectedSet.id}`);
       const updatedSets = sets.filter((set) => set.id !== selectedSet.id);
       setSets(updatedSets);
       setSelectedSet(null);

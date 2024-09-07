@@ -11,7 +11,7 @@ const RecordsTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/api/sets/");
+        const response = await api.get("/api/sets/records");
         const data = response.data;
 
         setExercises(data.exercises);

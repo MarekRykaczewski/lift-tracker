@@ -45,7 +45,7 @@ const useSetGroups = (date: string | undefined) => {
 
   const updateSetOrderInBackend = async (updatedSetGroups: SetGroupType[]) => {
     try {
-      await api.put(`api/workouts/${date}/set-groups/update-order/`, {
+      await api.put(`api/workouts/${date}/set-groups/order/`, {
         setGroups: updatedSetGroups.map((setGroup, index) => ({
           id: setGroup.id,
           order: index + 1,
