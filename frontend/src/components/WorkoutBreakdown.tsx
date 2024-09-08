@@ -1,143 +1,94 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
-import api from "../api";
+import useCategories from "../hooks/useCategories";
+import useWorkoutData from "../hooks/useWorkoutData";
 import { SetGroup, Workout } from "../types";
+import { calculateEndDate } from "../utils/DateUtils";
+import DateInput from "./UI/DateInput";
+import SelectField from "./UI/SelectField";
+import StatCard from "./UI/StatCard";
+import Table from "./UI/Table";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-interface Category {
-  id: number;
-  name: string;
-}
-
 const WorkoutBreakdown: React.FC = () => {
-  const [workoutData, setWorkoutData] = useState<Workout[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [breakdown, setBreakdown] = useState("Number of Sets");
   const [period, setPeriod] = useState("Week");
-  const [startDate, setStartDate] = useState("2024-07-08");
+  const [startDate, setStartDate] = useState("2024-01-01");
   const [endDate, setEndDate] = useState("");
-  const [totalSets, setTotalSets] = useState(0);
+
+  const { categories } = useCategories();
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await api.get("/api/exercises");
-        setCategories(response.data);
-      } catch (error) {
-        console.error("There was an error fetching the categories!", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    const calculateEndDate = (
-      startDate: string | number | Date,
-      period: string
-    ) => {
-      const start = new Date(startDate);
-      let end;
-      switch (period) {
-        case "Week":
-          end = new Date(start);
-          end.setDate(start.getDate() + 6);
-          break;
-        case "Month":
-          end = new Date(start);
-          end.setMonth(start.getMonth() + 1);
-          break;
-        case "Year":
-          end = new Date(start);
-          end.setFullYear(start.getFullYear() + 1);
-          break;
-        default:
-          end = start;
-      }
-      return end.toISOString().split("T")[0];
-    };
-
-    const newEndDate = calculateEndDate(startDate, period);
-    setEndDate(newEndDate);
+    setEndDate(calculateEndDate(startDate, period));
   }, [startDate, period]);
 
-  useEffect(() => {
-    api
-      .get("/api/workouts/")
-      .then((response) => {
-        setWorkoutData(response.data);
+  const { workoutData } = useWorkoutData(startDate, endDate);
 
-        // Calculate total sets
-        const totalSetsCount = response.data.reduce(
-          (total: number, workout: Workout) =>
-            total +
-            workout.set_groups.reduce(
-              (sum: number, group: SetGroup) => sum + group.sets.length,
-              0
-            ),
-          0
-        );
-        setTotalSets(totalSetsCount);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the workout data!", error);
-      });
-  }, [startDate, endDate]);
-
-  const parseWorkoutData = (data: Workout[]) => {
-    const categoriesMap: { [key: string]: number } = {};
-
-    categories.forEach((category) => {
-      categoriesMap[category.name] = 0;
-    });
-
-    data.forEach((workout: Workout) => {
+  const filterWorkoutsByDate = (data: Workout[]) => {
+    return data.filter((workout) => {
       const workoutDate = new Date(workout.date);
-      if (
-        workoutDate >= new Date(startDate) &&
-        workoutDate <= new Date(endDate)
-      ) {
+      return (
+        workoutDate >= new Date(startDate) && workoutDate <= new Date(endDate)
+      );
+    });
+  };
+
+  const parseWorkoutData = useCallback(
+    (data: Workout[]) => {
+      const categoriesMap: { [key: string]: number } = {};
+      let totalSets = 0;
+      let totalReps = 0;
+      let totalVolume = 0;
+
+      categories.forEach((category) => {
+        categoriesMap[category.name] = 0;
+      });
+
+      data.forEach((workout: Workout) => {
         workout.set_groups.forEach((setGroup: SetGroup) => {
           const { exercise_name, sets } = setGroup;
-
           if (exercise_name && categoriesMap[exercise_name] !== undefined) {
             if (breakdown === "Number of Sets") {
               categoriesMap[exercise_name] += sets.length;
+              totalSets += sets.length;
             } else if (breakdown === "Number of Reps") {
-              categoriesMap[exercise_name] += sets.reduce(
+              const reps = sets.reduce(
                 (sum: number, set: { reps: number }) => sum + set.reps,
                 0
               );
+              categoriesMap[exercise_name] += reps;
+              totalReps += reps;
             } else if (breakdown === "Total Volume") {
-              categoriesMap[exercise_name] += sets.reduce(
+              const volume = sets.reduce(
                 (sum: number, set: { reps: number; weight: number }) =>
                   sum + set.reps * set.weight,
                 0
               );
+              categoriesMap[exercise_name] += volume;
+              totalVolume += volume;
             }
           }
         });
-      }
-    });
+      });
 
-    return categoriesMap;
-  };
-
-  const workoutCounts = parseWorkoutData(workoutData);
-
-  const sumOfBreakdownValues = Object.values(workoutCounts).reduce(
-    (a, b) => a + b,
-    0
+      return { categoriesMap, totalSets, totalReps, totalVolume };
+    },
+    [categories, breakdown]
   );
 
+  // Filter the workout data
+  const filteredWorkouts = filterWorkoutsByDate(workoutData);
+  const { categoriesMap, totalSets, totalReps, totalVolume } =
+    parseWorkoutData(filteredWorkouts);
+
   const data = {
-    labels: Object.keys(workoutCounts),
+    labels: Object.keys(categoriesMap),
     datasets: [
       {
         label: `# of ${breakdown}`,
-        data: Object.values(workoutCounts),
+        data: Object.values(categoriesMap),
         backgroundColor: ["#4CAF50", "#2196F3", "#FF9800", "#9C27B0"],
         hoverBackgroundColor: ["#66BB6A", "#42A5F5", "#FFB74D", "#BA68C8"],
         borderWidth: 1,
@@ -155,74 +106,43 @@ const WorkoutBreakdown: React.FC = () => {
     },
   };
 
-  const handleBreakdownChange = (e: {
-    target: { value: React.SetStateAction<string> };
-  }) => setBreakdown(e.target.value);
-  const handlePeriodChange = (e: {
-    target: { value: React.SetStateAction<string> };
-  }) => setPeriod(e.target.value);
-  const handleStartDateChange = (e: {
-    target: { value: React.SetStateAction<string> };
-  }) => setStartDate(e.target.value);
-
   return (
     <div className="flex flex-col items-center p-4 border-2 w-full h-full bg-gray-100 dark:bg-gray-800 dark:border-gray-700 shadow-lg">
       <h1 className="text-2xl font-bold mb-2">Workout Breakdown</h1>
 
       <div className="flex flex-col lg:flex-row w-full justify-between">
-        <div className="mb-4 lg:mb-0">
-          <label
-            className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
-            htmlFor="breakdown"
-          >
-            BREAKDOWN
-          </label>
-          <select
-            id="breakdown"
-            value={breakdown}
-            onChange={handleBreakdownChange}
-            className="block border dark:border-gray-500 appearance-none w-full dark:bg-gray-700 bg-white px-4 py-2 pr-8 shadow leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="Number of Sets">Number of Sets</option>
-            <option value="Number of Reps">Number of Reps</option>
-            <option value="Total Volume">Total Volume</option>
-          </select>
-        </div>
-
-        <div className="mb-4 lg:mb-0">
-          <label
-            className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
-            htmlFor="period"
-          >
-            PERIOD
-          </label>
-          <select
-            id="period"
-            value={period}
-            onChange={handlePeriodChange}
-            className="block dark:border-gray-500 appearance-none w-full bg-white dark:bg-gray-700 border px-4 py-2 pr-8 shadow leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="Week">Week</option>
-            <option value="Month">Month</option>
-            <option value="Year">Year</option>
-          </select>
-        </div>
-
-        <div className="mb-4 lg:mb-0">
-          <label
-            className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
-            htmlFor="date"
-          >
-            DATE
-          </label>
-          <input
-            type="date"
-            id="date"
-            value={startDate}
-            onChange={handleStartDateChange}
-            className="appearance-none dark:border-gray-500 w-full bg-white dark:bg-gray-700 border px-4 py-2 shadow leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
+        <SelectField
+          id="breakdown"
+          label="BREAKDOWN"
+          value={breakdown}
+          onChange={useCallback(
+            (e: React.ChangeEvent<HTMLSelectElement>) =>
+              setBreakdown(e.target.value),
+            []
+          )}
+          options={["Number of Sets", "Number of Reps", "Total Volume"]}
+        />
+        <SelectField
+          id="period"
+          label="PERIOD"
+          value={period}
+          onChange={useCallback(
+            (e: React.ChangeEvent<HTMLSelectElement>) =>
+              setPeriod(e.target.value),
+            []
+          )}
+          options={["Week", "Month", "Year"]}
+        />
+        <DateInput
+          id="date"
+          label="DATE"
+          value={startDate}
+          onChange={useCallback(
+            (e: React.ChangeEvent<HTMLInputElement>) =>
+              setStartDate(e.target.value),
+            []
+          )}
+        />
       </div>
 
       <div className="mb-4">
@@ -236,54 +156,20 @@ const WorkoutBreakdown: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-2 gap-4 w-full">
-        <div className="dark:bg-gray-700 bg-white text-center border dark:border-gray-500 p-2">
-          <h2 className="font-bold">TOTAL WORKOUTS</h2>
-          <p className="text-blue-500 text-xl">{workoutData.length}</p>
-        </div>
-        <div className="dark:bg-gray-700 bg-white text-center border dark:border-gray-500 p-2">
-          <h2 className="font-bold">TOTAL SETS</h2>
-          <p className="text-blue-500 text-xl">{totalSets}</p>
-        </div>
+        <StatCard title="TOTAL WORKOUTS" value={filteredWorkouts.length} />
+        <StatCard
+          title={`TOTAL ${breakdown.toUpperCase()}`}
+          value={
+            breakdown === "Number of Sets"
+              ? totalSets
+              : breakdown === "Number of Reps"
+              ? totalReps
+              : totalVolume
+          }
+        />
       </div>
 
-      <div className="mt-4 w-full">
-        <table className="w-full table-auto bg-white dark:bg-gray-700">
-          <thead>
-            <tr>
-              <th className="border dark:border-gray-500 px-4 py-2">
-                Category
-              </th>
-              <th className="border dark:border-gray-500 px-4 py-2">
-                {breakdown}
-              </th>
-              <th className="border dark:border-gray-500 px-4 py-2">
-                Percentage
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(workoutCounts).map((label, index) => (
-              <tr key={index}>
-                <td className="border dark:border-gray-500 px-4 py-2">
-                  {label}
-                </td>
-                <td className="border dark:border-gray-500 px-4 py-2">
-                  {workoutCounts[label]}
-                </td>
-                <td className="border dark:border-gray-500 px-4 py-2">
-                  {sumOfBreakdownValues > 0
-                    ? (
-                        (workoutCounts[label] / sumOfBreakdownValues) *
-                        100
-                      ).toFixed(2)
-                    : 0}
-                  %
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Table data={categoriesMap} breakdown={breakdown} />
     </div>
   );
 };
