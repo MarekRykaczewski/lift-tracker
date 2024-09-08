@@ -24,7 +24,7 @@ const WorkoutBreakdown: React.FC = () => {
     setEndDate(calculateEndDate(startDate, period));
   }, [startDate, period]);
 
-  const { workoutData } = useWorkoutData(startDate, endDate);
+  const { workoutData } = useWorkoutData();
 
   const filterWorkoutsByDate = (data: Workout[]) => {
     return data.filter((workout) => {

@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import { SetGroup, Workout } from "../types";
 
-const useWorkoutData = (startDate: string, endDate: string) => {
+const useWorkoutData = () => {
   const [workoutData, setWorkoutData] = useState<Workout[]>([]);
   const [totalSets, setTotalSets] = useState(0);
 
   useEffect(() => {
     const fetchWorkoutData = async () => {
       try {
-        // Ensure endDate is not empty
         const response = await api.get(`api/workouts/`);
 
         const data = response.data;
@@ -32,7 +31,7 @@ const useWorkoutData = (startDate: string, endDate: string) => {
     };
 
     fetchWorkoutData();
-  }, [startDate, endDate]);
+  }, []);
 
   return { workoutData, totalSets };
 };
