@@ -9,7 +9,7 @@ const Table: React.FC<TableProps> = React.memo(({ data, breakdown }) => {
   const sumOfBreakdownValues = Object.values(data).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="mt-4 w-full">
+    <div className="mt-4 w-full lg:max-w-xl">
       <table className="w-full table-auto bg-white dark:bg-gray-700">
         <thead>
           <tr>

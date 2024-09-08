@@ -107,10 +107,10 @@ const WorkoutBreakdown: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-4 border-2 w-full h-full bg-gray-100 dark:bg-gray-800 dark:border-gray-700 shadow-lg">
+    <div className="flex flex-col items-center justify-around p-4 border-2 w-full h-full bg-gray-100 dark:bg-gray-800 dark:border-gray-700 shadow-lg">
       <h1 className="text-2xl font-bold mb-2">Workout Breakdown</h1>
 
-      <div className="flex flex-col lg:flex-row w-full justify-between">
+      <div className="flex flex-col lg:flex-row w-full justify-center lg:gap-2">
         <SelectField
           id="breakdown"
           label="BREAKDOWN"
@@ -155,7 +155,7 @@ const WorkoutBreakdown: React.FC = () => {
         <Doughnut data={data} options={options} />
       </div>
 
-      <div className="grid grid-cols-2 gap-4 w-full">
+      <div className="grid grid-cols-2 gap-4 w-full lg:max-w-xl">
         <StatCard title="TOTAL WORKOUTS" value={filteredWorkouts.length} />
         <StatCard
           title={`TOTAL ${breakdown.toUpperCase()}`}
